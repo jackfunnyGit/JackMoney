@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 设置的类别 -->
+    <PreferenceCategory
+        android:key="mylocation"
+        android:summary="My Location"
+        android:title="My Location">
+        <CheckBoxPreference
+            android:key="wireless_network"
+            android:summary="use internet to connect your doc"
+            android:title="open internet"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="mymsg"
+        android:summary="Personal Info"
+        android:title="Personal Info">
+        <EditTextPreference
+            android:key="myname"
+            android:title="Type in your name"
+            android:summary="name"/>
+    </PreferenceCategory>
+</PreferenceScreen>

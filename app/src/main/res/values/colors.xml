@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!-- background color -->
+    <color name="background1">#B97A57</color>
+    <color name="background">#ECDBA2</color>
+    <color name="background_blue">#0099C1</color>
+    <color name="background_blue2">#55CDF4</color>
+    <color name="background_wihte">#F8F8F8</color>
+    <!-- actionbar part -->
+    <color name="pedo_actionbar_divider">#CECECE</color>
+    <color name="pedo_actionbar_bkg">#F8F8F8</color>
+    <!-- tab part -->
+    <color name="tab_text_blue">#29ABE2</color>
+    <!-- tab part2 -->
+    <color name="color_primary">#F44336</color>
+
+
+</resources>

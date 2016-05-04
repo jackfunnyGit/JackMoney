@@ -1,0 +1,31 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="35dip"
+    android:id="@+id/fragmet2"
+    android:background="@color/background">
+
+
+    <FrameLayout
+        android:layout_width="500dp"
+        android:layout_height="300dp"
+        android:id="@+id/FrameLayout">
+
+        <com.asus.jack_tsai.jackmoney.ChartView
+            android:id="@+id/chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:onClick="JumpToSecond"
+        android:layout_below="@id/FrameLayout"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
