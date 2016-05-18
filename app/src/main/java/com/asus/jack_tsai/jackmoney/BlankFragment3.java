@@ -76,16 +76,15 @@ public class BlankFragment3 extends BaseFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Log.e("jackfunny", "blank3 onCreate : " + getId());
 
-        FragmentTransaction transaction  =getFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container, prefFragment);
-        transaction.commit();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.e("jackfunny", "blank3 onCreateView : " + getId());
         return inflater.inflate(R.layout.fragment_blank_fragment3, container, false);
     }
 
@@ -100,7 +99,11 @@ public class BlankFragment3 extends BaseFragment {
     {
         super.onActivityCreated(savedInstanceState);
         Log.e("jackfunny", "blank3 onActivityCreated : " + getId());
-
+        /*
+        FragmentTransaction transaction  =getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.fragment_container, prefFragment);
+        transaction.commit();
+        */
 
         listView = (ListView) getView().findViewById(R.id.list);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
@@ -138,6 +141,7 @@ public class BlankFragment3 extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.e("jackfunny", "blank3 onAttach : " + getId());
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

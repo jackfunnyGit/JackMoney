@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- 设置的类别 -->
+    <!-- 設置的類別 -->
     <PreferenceCategory
         android:key="mylocation"
         android:summary="My Location"
@@ -14,12 +14,27 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="mymsg"
-        android:summary="Personal Info"
+
         android:title="Personal Info">
         <EditTextPreference
-            android:key="myname"
+            android:key="Preference_EditText_Username"
             android:title="Type in your name"
             android:summary="name"/>
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Budget Setting">
+        <EditTextPreference
+            android:key="Preference_EditText_Daybudget"
+            android:title="Type in your Day budget"
+            android:summary="$Day Budget"
+            android:inputType="numberDecimal"/>
+
+        <EditTextPreference
+            android:key="Preference_EditText_Monthbudget"
+            android:title="Type in your Month budget"
+            android:summary="$Month Budget"
+            android:inputType="numberDecimal"/>
+    </PreferenceCategory>
+
 </PreferenceScreen>

@@ -1,10 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.asus.jack_tsai.jackmoney.MainActivity">
+    tools:context="com.asus.jack_tsai.jackmoney.SecondActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_export"
+        android:orderInCategory="100"
+        android:title="@string/action_export"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_upload"
+        android:icon="@drawable/upload_bar2"
+        app:showAsAction="always"
+        android:title="@string/action_upload"/>
+    <item
+        android:id="@+id/action_download"
+        android:icon="@drawable/download"
+        app:showAsAction="always"
+        android:title="@string/action_download"/>
 </menu>

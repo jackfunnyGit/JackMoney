@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,24 +19,31 @@ public  class  TabFragment extends Fragment {
 
     private SlidingTabLayout tabs;
     private ViewPager pager;
-    private FragmentPagerAdapter adapter;
+    private TabFragmentPagerAdapter adapter;
 
 
     public static Fragment newInstance(){
         TabFragment f = new TabFragment();
         return f;
     }
+    public void onCreate(Bundle savedInstanceState) {
 
+        Log.e("jackfunny","TabFragment onCreate");
+        super.onCreate(savedInstanceState);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.e("jackfunny","TabFragment onCreateView");
         return inflater.inflate(R.layout.frg_tab, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //adapter
+        Log.e("jackfunny","TabFragment onViewCreated");
          final LinkedList<BaseFragment> fragments = getFragments();
-        adapter = new TabFragmentPagerAdapter(getFragmentManager(), fragments);
+        adapter = new TabFragmentPagerAdapter(getChildFragmentManager(), fragments);
+        ((SecondActivity)getActivity()).setActivityAdapter(adapter);
         //pager
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);

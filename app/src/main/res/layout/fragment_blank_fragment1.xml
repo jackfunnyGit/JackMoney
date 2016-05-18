@@ -23,8 +23,8 @@
             android:layout_height="100dp"
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView"
+            android:text="@string/Day_Budget"
+            android:id="@+id/daytextView"
             android:background="@color/background1"
             />
         <Space android:layout_width="10dp"
@@ -34,8 +34,8 @@
             android:layout_height="100dp"
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView1"
+            android:text="@string/Month_Budget"
+            android:id="@+id/monthtextView"
             android:background="@color/background1"/>
     </LinearLayout>
 

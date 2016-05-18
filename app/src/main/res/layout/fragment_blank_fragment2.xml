@@ -1,5 +1,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="35dip"
@@ -7,25 +8,22 @@
     android:background="@color/background">
 
 
-    <FrameLayout
-        android:layout_width="500dp"
-        android:layout_height="300dp"
-        android:id="@+id/FrameLayout">
-
-        <com.asus.jack_tsai.jackmoney.ChartView
-            android:id="@+id/chart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
-
-    <Button
+    <ListView
+        android:id="@+id/daylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#ffff0000"
+        android:dividerHeight="2dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:onClick="JumpToSecond"
-        android:layout_below="@id/FrameLayout"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="bottom|end"
+        app:backgroundTint="@color/colorAccent"
+        app:rippleColor="@color/background_blue"
+        android:src="@drawable/add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
