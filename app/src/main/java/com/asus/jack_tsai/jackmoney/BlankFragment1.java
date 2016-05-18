@@ -123,7 +123,7 @@ public class BlankFragment1 extends BaseFragment {
         mSp = PreferenceManager.getDefaultSharedPreferences(getContext());
         mDayBudget = Integer.parseInt(mSp.getString(PrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET, "0"));
         mMonthBudget = Integer.parseInt(mSp.getString(PrefFragment.PREFERENCE_EDITTEXT_MONTHBUDGET, "0"));
-        Log.e("jackfunny", "blank1  : onCreate preference mDayBudget = " + mDayBudget + " MonthBudget= " + mMonthBudget);
+        Log.e("jackfunny", "blank1  : onActivityCreated preference mDayBudget = " + mDayBudget + " MonthBudget= " + mMonthBudget);
         mDaytextview = (TextView) getView().findViewById(R.id.daytextView);
         mDaytextview.setText(getString(R.string.Day_Budget));
         mDaytextview.append("" + mDayBudget);

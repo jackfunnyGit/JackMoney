@@ -103,6 +103,7 @@ public class MoneyAddActivity extends AppCompatActivity {
 
            Uri uri_ItemPos =Uri.parse( MoneyProvider.URL+"/"+getIntent().getExtras().getInt(_ID));
            getContentResolver().update(uri_ItemPos,values, null,null);
+           Toast.makeText(getBaseContext(), uri_ItemPos.toString(), Toast.LENGTH_LONG).show();
            Log.e("jackfunny", "update data "+uri_ItemPos.toString());
        }
        else {
