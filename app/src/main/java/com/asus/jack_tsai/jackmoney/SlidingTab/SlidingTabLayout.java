@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.asus.jack_tsai.jackmoney;
+package com.asus.jack_tsai.jackmoney.SlidingTab;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -29,6 +29,9 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.asus.jack_tsai.jackmoney.SlidingTab.SlidingTabStrip;
+import com.asus.jack_tsai.jackmoney.TabFragmentPagerAdapter;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to

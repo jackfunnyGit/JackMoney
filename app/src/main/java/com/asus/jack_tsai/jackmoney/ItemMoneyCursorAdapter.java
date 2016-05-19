@@ -12,8 +12,8 @@ import android.widget.TextView;
 /**
  * Created by Jack_Tsai on 2016/5/4.
  */
-public class MyAdapter extends CursorAdapter {
-    public MyAdapter(Context context, Cursor cursor, int flags) {
+public class ItemMoneyCursorAdapter extends CursorAdapter {
+    public ItemMoneyCursorAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, 0);
     }
 
@@ -28,7 +28,7 @@ public class MyAdapter extends CursorAdapter {
     // such as setting the text on a TextView.
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        //Log.e("jackfunny","MyAdapter bindView");
+        //Log.e("jackfunny","ItemMoneyCursorAdapter bindView");
         // Find fields to populate in inflated template
         TextView tvName = (TextView) view.findViewById(R.id.Item_Name);
         TextView tvPrice = (TextView) view.findViewById(R.id.price);

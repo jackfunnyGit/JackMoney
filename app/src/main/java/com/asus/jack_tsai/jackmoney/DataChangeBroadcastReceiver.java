@@ -8,9 +8,9 @@ import android.util.Log;
 
 import java.net.URI;
 
-public class DataChangeReceiver extends BroadcastReceiver {
-    public DataChangeReceiver() {
-        Log.e("jackfunny","DataChangeReceiver onCreate");
+public class DataChangeBroadcastReceiver extends BroadcastReceiver {
+    public DataChangeBroadcastReceiver() {
+        Log.e("jackfunny","DataChangeBroadcastReceiver onCreate");
     }
 
     @Override
@@ -19,7 +19,7 @@ public class DataChangeReceiver extends BroadcastReceiver {
         // an Intent broadcast.
 
         String URL =  intent.getStringExtra(BackupService.BROADCAST_URI_KEY);
-        Log.e("jackfunny","DataChangeReceiver : onReceive URL= "+URL);
+        Log.e("jackfunny","DataChangeBroadcastReceiver : onReceive URL= "+URL);
         Uri uri = Uri.parse(URL);
         context.getContentResolver().notifyChange(uri,null);
         //throw new UnsupportedOperationException("Not yet implemented");

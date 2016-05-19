@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class BackupService extends Service {
@@ -47,14 +46,14 @@ public class BackupService extends Service {
         Log.e("jackfunny", "BackupService Received start id " + startId + ": " + intent);
         Toast.makeText(this, "BackupService Received start id " + startId + ": " + intent, Toast.LENGTH_SHORT).show();
         //adjust in the future
-        mGoogleapiClient=SecondActivity.mGoogleApiClient;
+        mGoogleapiClient= HomeMoneyActivity.mGoogleApiClient;
         //
-        String Action=intent.getStringExtra(SecondActivity.LOADACTION);
-        if (Action.equals(SecondActivity.UPLOADACTION)) {
+        String Action=intent.getStringExtra(HomeMoneyActivity.LOADACTION);
+        if (Action.equals(HomeMoneyActivity.UPLOADACTION)) {
             UploadThread uploadThread = new UploadThread(startId);
             uploadThread.start();
         }
-        else if (Action.equals(SecondActivity.DOWNLOADACTION)){
+        else if (Action.equals(HomeMoneyActivity.DOWNLOADACTION)){
             DownloadThread downloadThread = new DownloadThread(startId);
             downloadThread.start();
         }

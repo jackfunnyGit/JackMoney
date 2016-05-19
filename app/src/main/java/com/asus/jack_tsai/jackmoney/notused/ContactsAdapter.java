@@ -1,4 +1,4 @@
-package com.asus.jack_tsai.jackmoney;
+package com.asus.jack_tsai.jackmoney.notused;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.asus.jack_tsai.jackmoney.R;
 
 import java.util.List;
 

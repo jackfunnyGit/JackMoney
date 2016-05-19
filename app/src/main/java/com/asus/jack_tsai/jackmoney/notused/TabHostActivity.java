@@ -1,13 +1,10 @@
-package com.asus.jack_tsai.jackmoney;
+package com.asus.jack_tsai.jackmoney.notused;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +17,12 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements BlankFragment1.OnFragmentInteractionListener,BlankFragment2.OnFragmentInteractionListener {
+import com.asus.jack_tsai.jackmoney.HomeMoneyCalendarFragment;
+import com.asus.jack_tsai.jackmoney.HomeMoneyViewFragment;
+import com.asus.jack_tsai.jackmoney.R;
+import com.asus.jack_tsai.jackmoney.HomeMoneyActivity;
+
+public class TabHostActivity extends AppCompatActivity implements HomeMoneyCalendarFragment.OnFragmentInteractionListener,HomeMoneyViewFragment.OnFragmentInteractionListener {
     private int mImages[] = {
             R.drawable.tab_home,
             R.drawable.tab_statistics,
@@ -57,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements BlankFragment1.On
             // Tab按钮添加文字和图片
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec(mFragmentTags[i]).setIndicator(getImageView(i));
             // 添加Fragment
-            if (i==0)mTabHost.addTab(tabSpec, BlankFragment1.class, null);
-           else mTabHost.addTab(tabSpec, BlankFragment2.class, null);
+            if (i==0)mTabHost.addTab(tabSpec, HomeMoneyCalendarFragment.class, null);
+           else mTabHost.addTab(tabSpec, HomeMoneyViewFragment.class, null);
             // 设置Tab按钮的背景
             mTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.color.pedo_actionbar_bkg);
         }
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements BlankFragment1.On
     }
     public void JumpToSecond(View view){
 
-        Intent intent = new Intent(this,SecondActivity.class);
+        Intent intent = new Intent(this,HomeMoneyActivity.class);
         startActivity(intent);
     }
     /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements BlankFragment1.On
 
         if (resultCode == RESULT_OK) {
             Bitmap mbmp = (Bitmap) data.getExtras().get("data");
-            BlankFragment1 blank1 = (BlankFragment1)getSupportFragmentManager().findFragmentByTag("Fragment_Tag2");
+            HomeMoneyCalendarFragment blank1 = (HomeMoneyCalendarFragment)getSupportFragmentManager().findFragmentByTag("Fragment_Tag2");
             ImageView img =(ImageView ) blank1.getView().findViewById(R.id.img);
             img.setImageBitmap(mbmp);
 

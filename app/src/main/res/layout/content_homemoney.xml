@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.asus.jack_tsai.jackmoney.SecondActivity"
-    tools:showIn="@layout/activity_second"
+    tools:context=".HomeMoneyActivity"
+    tools:showIn="@layout/activity_homemoney"
     android:background="@color/background">
 
     <FrameLayout

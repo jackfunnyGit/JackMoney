@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,12 +24,12 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BlankFragment2.OnFragmentInteractionListener} interface
+ * {@link HomeMoneyViewFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BlankFragment2#newInstance} factory method to
+ * Use the {@link HomeMoneyViewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment2 extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements LoaderManager.LoaderCallbacks<Cursor>{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,14 +44,14 @@ public class BlankFragment2 extends BaseFragment implements LoaderManager.Loader
     private String mParam2;
     private ListView mListView;
     private FloatingActionButton mFab;
-    private MyAdapter mItemAdapter;
+    private ItemMoneyCursorAdapter mItemAdapter;
 
 
     private OnFragmentInteractionListener mListener;
 
-    public BlankFragment2() {
+    public HomeMoneyViewFragment() {
         // Required empty public constructor
-        Log.e("jackfunny ", "BlankFragment2() " + getId());
+        Log.e("jackfunny ", "HomeMoneyViewFragment() " + getId());
     }
 
     /**
@@ -61,12 +60,12 @@ public class BlankFragment2 extends BaseFragment implements LoaderManager.Loader
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment2.
+     * @return A new instance of fragment HomeMoneyViewFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BlankFragment2 newInstance(String param1, String param2,int IndicatorColor,int DividerColor,int IconId) {
-        Log.e("jackfunny ", "BlankFragment2 newInstance() ");
-        BlankFragment2 fragment = new BlankFragment2();
+    public static HomeMoneyViewFragment newInstance(String param1, String param2,int IndicatorColor,int DividerColor,int IconId) {
+        Log.e("jackfunny ", "HomeMoneyViewFragment newInstance() ");
+        HomeMoneyViewFragment fragment = new HomeMoneyViewFragment();
         Bundle args = new Bundle();
         fragment.setTitle(param1);
         fragment.setIndicatorColor(IndicatorColor);
@@ -94,7 +93,7 @@ public class BlankFragment2 extends BaseFragment implements LoaderManager.Loader
                              Bundle savedInstanceState) {
         Log.e("jackfunny", "blank2  : onCreateView" + getId());
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank_fragment2, container, false);
+        return inflater.inflate(R.layout.homemoney_view_fragment, container, false);
     }
 
 
@@ -110,15 +109,15 @@ public class BlankFragment2 extends BaseFragment implements LoaderManager.Loader
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MoneyAddActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(MoneyAddActivity.DATE, ((SecondActivity) getActivity()).getDate());
+                bundle.putString(MoneyAddActivity.DATE, ((HomeMoneyActivity) getActivity()).getDate());
                 intent.putExtra(MoneyAddActivity.ACTION, MoneyAddActivity.ACTION_ADD);
                 intent.putExtras(bundle);
                 getActivity().startActivity(intent);
             }
         });
 
-        mItemAdapter = new MyAdapter(getContext(), null,0);
-        ((SecondActivity)getActivity()).setCursorAdapter(mItemAdapter);
+        mItemAdapter = new ItemMoneyCursorAdapter(getContext(), null,0);
+        ((HomeMoneyActivity)getActivity()).setCursorAdapter(mItemAdapter);
         mListView .setAdapter(mItemAdapter);
         mListView .setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -134,7 +133,7 @@ public class BlankFragment2 extends BaseFragment implements LoaderManager.Loader
                                 removeItem(position, view);
                                 String selection = MoneyProvider.DATE + " = ?";
                                 String[] whereArgs = new String[]{
-                                        "" + ((SecondActivity) getActivity()).getDate()
+                                        "" + ((HomeMoneyActivity) getActivity()).getDate()
                                 };
 
                                /* Cursor c = getActivity().getContentResolver().query(Uri.parse(MoneyProvider.URL), null, selection, whereArgs, null);
@@ -192,10 +191,10 @@ public class BlankFragment2 extends BaseFragment implements LoaderManager.Loader
         Log.e("jackfunny", "blank2 onResume" );
         Uri Uri_Table1 = Uri.parse(MoneyProvider.URL);
         String[] projection = new String[]{MoneyProvider.NAME,MoneyProvider.PRICE,MoneyProvider._ID};
-        //String selection=MoneyProvider.DATE+" = "+((SecondActivity)getActivity()).getDate();
+        //String selection=MoneyProvider.DATE+" = "+((HomeMoneyActivity)getActivity()).getDate();
         /*String selection=MoneyProvider.DATE+" = ?";
         String[] whereArgs = new String[] {
-                ""+((SecondActivity) getActivity()).getDate()
+                ""+((HomeMoneyActivity) getActivity()).getDate()
         };
 
 
@@ -266,10 +265,10 @@ public class BlankFragment2 extends BaseFragment implements LoaderManager.Loader
     }
 
    public void updateListView(){
-       /*String date=((SecondActivity) getActivity()).getDate();
+       /*String date=((HomeMoneyActivity) getActivity()).getDate();
        String selection=MoneyProvider.DATE+" = ?";
        String[] whereArgs = new String[] {
-               ""+((SecondActivity) getActivity()).getDate()
+               ""+((HomeMoneyActivity) getActivity()).getDate()
        };
        Uri Uri_Table1 = Uri.parse(MoneyProvider.URL);
        Cursor c =  getActivity().getContentResolver().query(Uri_Table1, null, selection, whereArgs, null);
@@ -286,7 +285,7 @@ public class BlankFragment2 extends BaseFragment implements LoaderManager.Loader
         Log.e("jackfunny","Loader onCreateLoader id="+id);
         String selection=MoneyProvider.DATE+" = ?";
         String[] whereArgs = new String[] {
-                ""+((SecondActivity) getActivity()).getDate()
+                ""+((HomeMoneyActivity) getActivity()).getDate()
         };
         return new CursorLoader(getContext(), MoneyProvider.CONTENT_URI, null, selection, whereArgs, null);
     }

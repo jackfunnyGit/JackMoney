@@ -105,6 +105,7 @@ public class MoneyAddActivity extends AppCompatActivity {
            getContentResolver().update(uri_ItemPos,values, null,null);
            Toast.makeText(getBaseContext(), uri_ItemPos.toString(), Toast.LENGTH_LONG).show();
            Log.e("jackfunny", "update data "+uri_ItemPos.toString());
+           finish();
        }
        else {
            Log.e("jackfunny","MoneyAddActivity receive a wrong action!!");

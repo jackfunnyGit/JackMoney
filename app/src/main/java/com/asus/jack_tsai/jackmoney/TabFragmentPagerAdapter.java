@@ -1,27 +1,27 @@
 package com.asus.jack_tsai.jackmoney;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    LinkedList<BaseFragment> fragments = null;
+    ArrayList<HomeMoneyBaseFragment> fragments = null;
 
-    public TabFragmentPagerAdapter(FragmentManager fm, LinkedList<BaseFragment> fragments) {
+    public TabFragmentPagerAdapter(FragmentManager fm, @NonNull ArrayList<HomeMoneyBaseFragment> fragments) {
         super(fm);
-        if (fragments == null) {
-            this.fragments = new LinkedList<BaseFragment>();
-        }else{
+
             this.fragments = fragments;
-        }
+
     }
 
     @Override
-    public BaseFragment getItem(int position) {
+    public HomeMoneyBaseFragment getItem(int position) {
         Log.e("jackfunny","getItem position="+position);
         //run once with the fragment created;
         return fragments.get(position);
@@ -51,8 +51,8 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
     }
     @Override public int getItemPosition(Object object) {
         Log.e("jackfunny", "getItemPosition() ");
-        if (object instanceof BlankFragment2) {
-            ((BlankFragment2) object).updateListView();
+        if (object instanceof HomeMoneyViewFragment) {
+            ((HomeMoneyViewFragment) object).updateListView();
 
         }
         return super.getItemPosition(object);

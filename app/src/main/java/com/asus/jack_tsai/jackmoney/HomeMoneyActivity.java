@@ -2,15 +2,10 @@ package com.asus.jack_tsai.jackmoney;
 
 
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,20 +16,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
-
-public class SecondActivity extends AppCompatActivity implements BlankFragment1.OnFragmentInteractionListener,BlankFragment2.OnFragmentInteractionListener,BlankFragment3.OnFragmentInteractionListener,BackupFragment.OnFragmentInteractionListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCalendarFragment.OnFragmentInteractionListener,HomeMoneyViewFragment.OnFragmentInteractionListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private  String mDate;
     private  TabFragmentPagerAdapter mPagerAdapter ;
-    private  MyAdapter mItemAdapter;
+    private ItemMoneyCursorAdapter mItemAdapter;
     static public GoogleApiClient mGoogleApiClient;
     private boolean mResolvingError = false;
     private static final int DIALOG_ERROR_CODE =100;
@@ -79,10 +68,10 @@ public class SecondActivity extends AppCompatActivity implements BlankFragment1.
                 Log.e("jackfunny","onOptionsItemSelected  R.id.action_settings ...");
                 if (getSupportFragmentManager().findFragmentByTag("setting_prefFragment")==null){
                     Log.e("jackfunny","R.id.action_settings FindFragmentByTag(setting_prefFragment)==null !!!!");
-                    PrefFragment prefFragment = new PrefFragment();
+                    SettingPrefFragment settingPrefFragment = new SettingPrefFragment();
                     getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_fragment, prefFragment, "setting_prefFragment")
+                        .replace(R.id.content_fragment, settingPrefFragment, "setting_prefFragment")
                         .addToBackStack(null)
                         .commit();
                 }
@@ -103,7 +92,7 @@ public class SecondActivity extends AppCompatActivity implements BlankFragment1.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_homemoney);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initToolbar();
@@ -143,8 +132,8 @@ public class SecondActivity extends AppCompatActivity implements BlankFragment1.
     public String getDate() {return mDate;}
     public void setActivityAdapter(TabFragmentPagerAdapter Adapter){mPagerAdapter=Adapter;}
     public TabFragmentPagerAdapter getActivityAdapter(){return mPagerAdapter;}
-    public  void setCursorAdapter(MyAdapter myAdapter){mItemAdapter=myAdapter;}
-    public MyAdapter getCursorAdapter(){return mItemAdapter;}
+    public  void setCursorAdapter(ItemMoneyCursorAdapter itemMoneyCursorAdapter){mItemAdapter= itemMoneyCursorAdapter;}
+    public ItemMoneyCursorAdapter getCursorAdapter(){return mItemAdapter;}
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {

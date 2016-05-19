@@ -11,11 +11,9 @@ import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.PreferenceScreen;
 import android.util.Log;
 
-public class PrefFragment extends PreferenceFragmentCompat {
+public class SettingPrefFragment extends PreferenceFragmentCompat {
     static final String PREFERENCE_EDITTEXT_DAYBUDGET="Preference_EditText_Daybudget";
     static final String PREFERENCE_EDITTEXT_MONTHBUDGET="Preference_EditText_Monthbudget";
     static final String PREFERENCE_EDITTEXT_USERNAME="Preference_EditText_Username";
@@ -23,9 +21,9 @@ public class PrefFragment extends PreferenceFragmentCompat {
     //Menber field
     private SharedPreferences mSp;
 
-    public static PrefFragment newInstance(String param1, String param2,int IndicatorColor,int DividerColor,int IconId) {
+    public static SettingPrefFragment newInstance(String param1, String param2,int IndicatorColor,int DividerColor,int IconId) {
         Log.e("jackfunny ", "PreFragment1 newInstance() ");
-        PrefFragment fragment = new PrefFragment();
+        SettingPrefFragment fragment = new SettingPrefFragment();
         Bundle args = new Bundle();
        /* fragment.setTitle(param1);
         fragment.setIndicatorColor(IndicatorColor);

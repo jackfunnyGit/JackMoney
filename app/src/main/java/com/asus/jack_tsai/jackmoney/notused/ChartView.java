@@ -1,4 +1,4 @@
-package com.asus.jack_tsai.jackmoney;
+package com.asus.jack_tsai.jackmoney.notused;
 
 /**
  * Created by Jack_Tsai on 2016/4/29.
@@ -13,6 +13,8 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
+import com.asus.jack_tsai.jackmoney.R;
 
 public class ChartView extends View{
 

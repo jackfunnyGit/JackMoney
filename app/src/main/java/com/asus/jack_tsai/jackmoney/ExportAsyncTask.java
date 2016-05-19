@@ -31,8 +31,9 @@ public class ExportAsyncTask extends AsyncTask<String, Integer , Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Log.e("jackfunny", "ExportAsyncTask :  onPreExecute  " );
+        Log.e("jackfunny", "ExportAsyncTask :  onPreExecute  ");
         progressDialog.setMessage("正在匯出Excel檔");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
     }
 
@@ -79,9 +80,10 @@ public class ExportAsyncTask extends AsyncTask<String, Integer , Boolean> {
                             bw.write(cursor.getString(j));
                     }
                     bw.newLine();
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
 
-                    publishProgress((int)(i/(float)rowcount));
+                    publishProgress((int) ((float) i/rowcount*100));
+
                 }
                 bw.flush();
 
@@ -100,7 +102,7 @@ public class ExportAsyncTask extends AsyncTask<String, Integer , Boolean> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        Log.e("jackfunny", "ExportAsyncTask :  onProgressUpdate ");
+        Log.e("jackfunny", "ExportAsyncTask :  onProgressUpdate nowloading "+values[0]+"%");
         progressDialog.setProgress(values[0]);
 
     }

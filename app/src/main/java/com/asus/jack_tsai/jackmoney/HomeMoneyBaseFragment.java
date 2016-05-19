@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 
-public class BaseFragment extends Fragment {
+public class HomeMoneyBaseFragment extends Fragment {
 
     private String title = "";
     private int iconResId = 0;

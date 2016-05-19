@@ -3,13 +3,15 @@ package com.asus.jack_tsai.jackmoney;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.asus.jack_tsai.jackmoney.SlidingTab.SlidingTabLayout;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -41,9 +43,9 @@ public  class  TabFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //adapter
         Log.e("jackfunny","TabFragment onViewCreated");
-         final LinkedList<BaseFragment> fragments = getFragments();
+        final ArrayList<HomeMoneyBaseFragment> fragments = getFragments();
         adapter = new TabFragmentPagerAdapter(getChildFragmentManager(), fragments);
-        ((SecondActivity)getActivity()).setActivityAdapter(adapter);
+        ((HomeMoneyActivity)getActivity()).setActivityAdapter(adapter);
         //pager
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
@@ -70,17 +72,14 @@ public  class  TabFragment extends Fragment {
         tabs.setViewPager(pager);
     }
 
-    private LinkedList<BaseFragment> getFragments(){
+    private ArrayList<HomeMoneyBaseFragment> getFragments(){
         int indicatorColor = Color.parseColor(this.getResources().getString(+R.color.colorAccent));
         int dividerColor = Color.TRANSPARENT;
 
-        LinkedList<BaseFragment> fragments = new LinkedList<BaseFragment>();
-        fragments.add(BlankFragment1.newInstance("home","jackfunny", indicatorColor, dividerColor,R.drawable.tab_home));
-        fragments.add(BlankFragment2.newInstance("statistics","jackfunny", indicatorColor, dividerColor,R.drawable.tab_statistics));
-        fragments.add(BlankFragment3.newInstance("setting", "jackfunny", indicatorColor, dividerColor, R.drawable.tab_setting));
-        //fragments.add(GoodFragment.newInstance("Good", Color.BLUE, dividerColor));
-       // fragments.add(LookFragment.newInstance("Look", Color.CYAN, dividerColor));
-       // fragments.add(WoodFragment.newInstance("Wood", Color.MAGENTA, dividerColor));
+        ArrayList<HomeMoneyBaseFragment> fragments = new ArrayList<HomeMoneyBaseFragment>();
+        fragments.add(HomeMoneyCalendarFragment.newInstance("home", "jackfunny", indicatorColor, dividerColor, R.drawable.tab_home));
+        fragments.add(HomeMoneyViewFragment.newInstance("statistics", "jackfunny", indicatorColor, dividerColor, R.drawable.tab_statistics));
+        //fragments.add(BlankFragment3.newInstance("setting", "jackfunny", indicatorColor, dividerColor, R.drawable.tab_setting));
         return fragments;
     }
 

@@ -26,12 +26,12 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BlankFragment1.OnFragmentInteractionListener} interface
+ * {@link HomeMoneyCalendarFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BlankFragment1#newInstance} factory method to
+ * Use the {@link HomeMoneyCalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment1 extends BaseFragment {
+public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -52,11 +52,11 @@ public class BlankFragment1 extends BaseFragment {
     private DayCursorLoaderListiner mDayCursorLoaderListiner;
     private OnFragmentInteractionListener mListener;
 
-    public BlankFragment1() {
+    public HomeMoneyCalendarFragment() {
         // Required empty public constructor
         mMonthCursorLoaderListiner = new MonthCursorLoaderListiner();
         mDayCursorLoaderListiner = new DayCursorLoaderListiner();
-        Log.e("jackfunny ", "BlankFragment1() " + getId());
+        Log.e("jackfunny ", "HomeMoneyCalendarFragment() " + getId());
     }
 
     /**
@@ -65,12 +65,12 @@ public class BlankFragment1 extends BaseFragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment1.
+     * @return A new instance of fragment HomeMoneyCalendarFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BlankFragment1 newInstance(String param1, String param2, int IndicatorColor, int DividerColor, int IconId) {
-        Log.e("jackfunny ", "BlankFragment1 newInstance() ");
-        BlankFragment1 fragment = new BlankFragment1();
+    public static HomeMoneyCalendarFragment newInstance(String param1, String param2, int IndicatorColor, int DividerColor, int IconId) {
+        Log.e("jackfunny ", "HomeMoneyCalendarFragment newInstance() ");
+        HomeMoneyCalendarFragment fragment = new HomeMoneyCalendarFragment();
 
         Bundle args = new Bundle();
         fragment.setTitle(param1);
@@ -95,7 +95,7 @@ public class BlankFragment1 extends BaseFragment {
         Date date = new Date(System.currentTimeMillis());
         mDate = df.format(date);
         Log.e("jackfunny", "blank1  : onCreate mdate=" + mDate);
-        ((SecondActivity) getActivity()).setDate(mDate);
+        ((HomeMoneyActivity) getActivity()).setDate(mDate);
 
     }
 
@@ -104,7 +104,7 @@ public class BlankFragment1 extends BaseFragment {
                              Bundle savedInstanceState) {
         Log.e("jackfunny", "blank1  : onCreateView id= " + getId());
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank_fragment1, container, false);
+        return inflater.inflate(R.layout.homemoney_calendar_fragment, container, false);
     }
 
     @Override
@@ -121,8 +121,8 @@ public class BlankFragment1 extends BaseFragment {
 
         super.onActivityCreated(savedInstanceState);
         mSp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mDayBudget = Integer.parseInt(mSp.getString(PrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET, "0"));
-        mMonthBudget = Integer.parseInt(mSp.getString(PrefFragment.PREFERENCE_EDITTEXT_MONTHBUDGET, "0"));
+        mDayBudget = Integer.parseInt(mSp.getString(SettingPrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET, "0"));
+        mMonthBudget = Integer.parseInt(mSp.getString(SettingPrefFragment.PREFERENCE_EDITTEXT_MONTHBUDGET, "0"));
         Log.e("jackfunny", "blank1  : onActivityCreated preference mDayBudget = " + mDayBudget + " MonthBudget= " + mMonthBudget);
         mDaytextview = (TextView) getView().findViewById(R.id.daytextView);
         mDaytextview.setText(getString(R.string.Day_Budget));
@@ -145,11 +145,11 @@ public class BlankFragment1 extends BaseFragment {
                 //mDate = year + "-" + (month + 1) + "-" + dayOfMonth ;
                 //Bundle bundle = new Bundle();
                 //bundle.putString("date", mDate);
-                ((SecondActivity) getActivity()).setDate(mDate);
+                ((HomeMoneyActivity) getActivity()).setDate(mDate);
                 getActivity().getSupportLoaderManager().restartLoader(0, null, mMonthCursorLoaderListiner);
                 getActivity().getSupportLoaderManager().restartLoader(1, null,mDayCursorLoaderListiner );
 
-                //((SecondActivity) getActivity()).getActivityAdapter().notifyDataSetChanged();
+                //((HomeMoneyActivity) getActivity()).getActivityAdapter().notifyDataSetChanged();
                 Log.e("jackfunny", "date: [" + mDate + "] today is = " + new Date(mCalendarView.getDate()));
 
             }
@@ -234,7 +234,7 @@ public class BlankFragment1 extends BaseFragment {
 
             String selection = MoneyProvider.DATE + " = ?";
             String[] whereArgs = new String[]{
-                    "" + ((SecondActivity) getActivity()).getDate()
+                    "" + ((HomeMoneyActivity) getActivity()).getDate()
             };
             /* String selection = MoneyProvider.DATE + " LIKE ?";
             String[] whereArgs = new String[]{
@@ -251,7 +251,7 @@ public class BlankFragment1 extends BaseFragment {
             Log.e("jackfunny", "Loader(blank1)  onLoadFinished id=0");
             //mItemAdapter.changeCursor(cursor);
             //mItemAdapter.notifyDataSetChanged();//not update view without this
-            int DayBudget = Integer.parseInt(mSp.getString(PrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET, "0"));
+            int DayBudget = Integer.parseInt(mSp.getString(SettingPrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET, "0"));
             if (cursor.moveToFirst()) {
                 Log.e("jackfunny", "Loader(blank1) onLoadFinished date = " + cursor.getString(cursor.getColumnIndex(MoneyProvider.PRICE)));
                 do {
@@ -263,8 +263,8 @@ public class BlankFragment1 extends BaseFragment {
             }
             mDaytextview.setText(getString(R.string.Day_Budget));
             mDaytextview.append("" + DayBudget);
-            ((SecondActivity) getActivity()).getCursorAdapter().changeCursor(cursor);
-            ((SecondActivity) getActivity()).getCursorAdapter().notifyDataSetChanged();//not update view without this
+            ((HomeMoneyActivity) getActivity()).getCursorAdapter().changeCursor(cursor);
+            ((HomeMoneyActivity) getActivity()).getCursorAdapter().notifyDataSetChanged();//not update view without this
         }
 
         @Override
@@ -293,7 +293,7 @@ public class BlankFragment1 extends BaseFragment {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
             Log.e("jackfunny", "Loader(blank1)  onLoadFinished id=1");
-            int MonthBudget = Integer.parseInt(mSp.getString(PrefFragment.PREFERENCE_EDITTEXT_MONTHBUDGET, "0"));
+            int MonthBudget = Integer.parseInt(mSp.getString(SettingPrefFragment.PREFERENCE_EDITTEXT_MONTHBUDGET, "0"));
             if (cursor.moveToFirst()) {
                 do {
                     //Log.e("jackfunny", "Loader(blank1) onLoadFinished id =1 price = " + cursor.getInt(cursor.getColumnIndex(MoneyProvider.PRICE))+"monthbudget= "+mMonthBudget);
