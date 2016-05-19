@@ -14,7 +14,7 @@ import android.widget.TextView;
  */
 public class ItemMoneyCursorAdapter extends CursorAdapter {
     public ItemMoneyCursorAdapter(Context context, Cursor cursor, int flags) {
-        super(context, cursor, 0);
+        super(context, cursor, flags);
     }
 
     // The newView method is used to inflate a new view and return it,

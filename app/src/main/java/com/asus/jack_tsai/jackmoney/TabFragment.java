@@ -19,8 +19,8 @@ import java.util.LinkedList;
  */
 public  class  TabFragment extends Fragment {
 
-    private SlidingTabLayout tabs;
-    private ViewPager pager;
+    private SlidingTabLayout mTabs;
+    private ViewPager mPager;
     private TabFragmentPagerAdapter adapter;
 
 
@@ -46,13 +46,13 @@ public  class  TabFragment extends Fragment {
         final ArrayList<HomeMoneyBaseFragment> fragments = getFragments();
         adapter = new TabFragmentPagerAdapter(getChildFragmentManager(), fragments);
         ((HomeMoneyActivity)getActivity()).setActivityAdapter(adapter);
-        //pager
-        pager = (ViewPager) view.findViewById(R.id.pager);
-        pager.setAdapter(adapter);
+        //mPager
+        mPager = (ViewPager) view.findViewById(R.id.pager);
+        mPager.setAdapter(adapter);
 
-        //tabs
-        tabs = (SlidingTabLayout) view.findViewById(R.id.tabs);
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+        //mTabs
+        mTabs = (SlidingTabLayout) view.findViewById(R.id.tabs);
+        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
 
             @Override
             public int getIndicatorColor(int position) {
@@ -67,9 +67,9 @@ public  class  TabFragment extends Fragment {
         });
 
 
-        tabs.setBackgroundResource(R.color.pedo_actionbar_divider);
-        tabs.setCustomTabView(R.layout.view_tab_indicator, R.id.tabtext, R.id.tab_iv_image);
-        tabs.setViewPager(pager);
+        mTabs.setBackgroundResource(R.color.pedo_actionbar_divider);
+        mTabs.setCustomTabView(R.layout.view_tab_indicator, R.id.tabtext, R.id.tab_iv_image);
+        mTabs.setViewPager(mPager);
     }
 
     private ArrayList<HomeMoneyBaseFragment> getFragments(){

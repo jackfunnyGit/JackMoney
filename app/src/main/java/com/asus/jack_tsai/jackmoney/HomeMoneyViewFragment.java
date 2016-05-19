@@ -29,7 +29,7 @@ import android.widget.TextView;
  * Use the {@link HomeMoneyViewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class HomeMoneyViewFragment extends HomeMoneyBaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -80,7 +80,7 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("jackfunny", "blank2  : onCreate" + getId());
+        Log.e("jackfunny", "HomeMoneyViewFragment  : onCreate" + getId());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -91,7 +91,7 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e("jackfunny", "blank2  : onCreateView" + getId());
+        Log.e("jackfunny", "HomeMoneyViewFragment  : onCreateView" + getId());
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.homemoney_view_fragment, container, false);
     }
@@ -101,9 +101,8 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        Log.e("jackfunny", "blank2 onActivityCreated : " + getId());
-        mListView = (ListView)getView().findViewById(R.id.daylist);
-        mFab= (FloatingActionButton) getView().findViewById(R.id.fab);
+        Log.e("jackfunny", "HomeMoneyViewFragment onActivityCreated : " + getId());
+        initView();
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,13 +129,14 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                removeItem(position, view);
+                                removeItem(view);
+                                /*
                                 String selection = MoneyProvider.DATE + " = ?";
                                 String[] whereArgs = new String[]{
                                         "" + ((HomeMoneyActivity) getActivity()).getDate()
                                 };
 
-                               /* Cursor c = getActivity().getContentResolver().query(Uri.parse(MoneyProvider.URL), null, selection, whereArgs, null);
+                                Cursor c = getActivity().getContentResolver().query(Uri.parse(MoneyProvider.URL), null, selection, whereArgs, null);
                                 mItemAdapter.changeCursor(c);
                                 mItemAdapter.notifyDataSetChanged();
                                 */
@@ -158,7 +158,7 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                updateItem(position, view);
+                updateItem( view);
 
             }
         });
@@ -176,7 +176,7 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.e("jackfunny", "blank2  : onAttach" + getId());
+        Log.e("jackfunny", "HomeMoneyViewFragment  : onAttach" + getId());
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -188,9 +188,9 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
     @Override
     public void onResume(){
         super.onResume();
-        Log.e("jackfunny", "blank2 onResume" );
-        Uri Uri_Table1 = Uri.parse(MoneyProvider.URL);
-        String[] projection = new String[]{MoneyProvider.NAME,MoneyProvider.PRICE,MoneyProvider._ID};
+        Log.e("jackfunny", "HomeMoneyViewFragment onResume");
+       // Uri Uri_Table1 = Uri.parse(MoneyProvider.URL);
+       // String[] projection = new String[]{MoneyProvider.NAME,MoneyProvider.PRICE,MoneyProvider._ID};
         //String selection=MoneyProvider.DATE+" = "+((HomeMoneyActivity)getActivity()).getDate();
         /*String selection=MoneyProvider.DATE+" = ?";
         String[] whereArgs = new String[] {
@@ -241,15 +241,19 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
         void onFragmentInteraction(Uri uri);
     }
 
+    private  void initView(){
+        mListView = (ListView)getView().findViewById(R.id.daylist);
+        mFab= (FloatingActionButton) getView().findViewById(R.id.fab);
 
-    public void removeItem(int position,View view) {
+    }
+    private void removeItem(View view) {
         Log.e("jackfunny", "removeItem by  id= " + view.getTag());
         Uri Uri_itempos = Uri.parse(MoneyProvider.URL + "/" + view.getTag());
         int count = getActivity().getContentResolver().delete(Uri_itempos, null, null);
         Log.e("jackfunny", "removeItem count= " + count);
     }
 
-    public void updateItem(int position,View view){
+    private void updateItem(View view){
         Intent intent = new Intent(getActivity(),MoneyAddActivity.class);
         Bundle bundle =new Bundle();
         bundle.putInt(MoneyAddActivity._ID, (int) view.getTag());
@@ -279,27 +283,6 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment implements Load
        */
    }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        //String[] projection = {MoneyProvider._ID, MoneyProvider.NAME, MoneyProvider.DATE};
-        Log.e("jackfunny","Loader onCreateLoader id="+id);
-        String selection=MoneyProvider.DATE+" = ?";
-        String[] whereArgs = new String[] {
-                ""+((HomeMoneyActivity) getActivity()).getDate()
-        };
-        return new CursorLoader(getContext(), MoneyProvider.CONTENT_URI, null, selection, whereArgs, null);
-    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.e("jackfunny","Loader onLoadFinished ");
-        mItemAdapter.changeCursor(cursor);
-        mItemAdapter.notifyDataSetChanged();//not update view without this
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
 
 }

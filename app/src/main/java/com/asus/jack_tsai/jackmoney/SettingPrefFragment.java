@@ -51,44 +51,7 @@ public void onCreate(Bundle savedInstanceState) {
  @Override
  public boolean onPreferenceTreeClick(Preference preference) {
      Log.e("jackfunny", "PreferenceTreeClick");
-     mSp = getPreferenceManager().getSharedPreferences();
 
-/*g
-     if (preference.getKey().equals(PREFERENCE_EDITTEXT_USERNAME)) {
-         EditTextPreference edittext_preference = (EditTextPreference) preference;
-         edittext_preference.setSummary(mSp.getString(PREFERENCE_EDITTEXT_USERNAME,"username"));
-     }
-     else if (preference.getKey().equals(PREFERENCE_EDITTEXT_DAYBUDGET)) {
-         EditTextPreference edittext_preference = (EditTextPreference) preference;
-         edittext_preference.setSummary(mSp.getString(PREFERENCE_EDITTEXT_DAYBUDGET,""));
-     }
-     else if (preference.getKey().equals(PREFERENCE_EDITTEXT_MONTHBUDGET)) {
-         EditTextPreference edittext_preference = (EditTextPreference) preference;
-         edittext_preference.setSummary(mSp.getString(PREFERENCE_EDITTEXT_MONTHBUDGET ,""));
-     }
-
-     preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-         @Override
-         public boolean onPreferenceChange(Preference preference, Object newValue) {
-             Log.e("jackfunny", "onPreferenceChange");
-             String key = preference.getKey();
-             if (key.equals(PREFERENCE_EDITTEXT_USERNAME)) {
-                 //动态改变summary的值
-                 if (((String) newValue).trim().equals(""))
-                     preference.setSummary(R.string.action_settings);
-                 else
-                     preference.setSummary((String) newValue);
-
-             } else if (key.equals("listkey")) {
-                 preference.setSummary(getResources().getString(R.string.action_settings) + newValue);
-             }
-             return true;
-
-         }
-
-     });
-*/
      return super.onPreferenceTreeClick( preference);
  }
     public void initView(){
