@@ -18,13 +18,13 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Date"
-        android:id="@+id/Date"
+        android:id="@+id/date"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
          />
     <Space android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/Date"
+        android:layout_below="@id/date"
         android:id="@+id/space"/>
 <LinearLayout
     android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:id="@+id/textView_name"/>
 
     <EditText
-        android:id="@+id/editText_itemName"
+        android:id="@+id/edittext_itemname"
         android:layout_height="@dimen/text_height"
         android:layout_width="@dimen/text_width"
         android:background="@android:drawable/edit_text"
@@ -53,7 +53,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/Price" />
     <EditText
-        android:id="@+id/editText_price"
+        android:id="@+id/edittext_price"
         android:layout_height="@dimen/text_height"
         android:layout_width="@dimen/text_width"
         android:background="@android:drawable/edit_text"
@@ -64,7 +64,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/Category"/>
     <EditText
-        android:id="@+id/editText_Category"
+        android:id="@+id/edittext_category"
         android:layout_height="@dimen/text_height"
         android:layout_width="@dimen/text_width"
         android:background="@android:drawable/edit_text"/>
@@ -80,7 +80,7 @@
         android:id="@+id/MemoText"
         android:layout_below="@id/LinearLayout"/>
     <EditText
-        android:id="@+id/editText_Memo"
+        android:id="@+id/edittext_memo"
         android:layout_height="60dp"
         android:layout_width="match_parent"
         android:background="@android:drawable/edit_text"
@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imagePic"
-        android:layout_below="@+id/editText_Memo"
+        android:layout_below="@+id/edittext_memo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="@drawable/eating"/>

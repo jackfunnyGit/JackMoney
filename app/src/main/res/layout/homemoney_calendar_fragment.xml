@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/Day_Budget"
-            android:id="@+id/daytextView"
+            android:id="@+id/daytext_view"
             android:background="@color/background1"
             />
         <Space android:layout_width="10dp"
@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/Month_Budget"
-            android:id="@+id/monthtextView"
+            android:id="@+id/monthtext_view"
             android:background="@color/background1"/>
     </LinearLayout>
 
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayoutup"
-        android:id="@+id/calendarView" />
+        android:id="@+id/calendar_view" />
 
 
 

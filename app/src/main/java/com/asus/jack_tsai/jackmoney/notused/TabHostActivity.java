@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.asus.jack_tsai.jackmoney.HomeMoneyCalendarFragment;
 import com.asus.jack_tsai.jackmoney.HomeMoneyViewFragment;
+import com.asus.jack_tsai.jackmoney.ItemMoneyCursorAdapter;
 import com.asus.jack_tsai.jackmoney.R;
 import com.asus.jack_tsai.jackmoney.HomeMoneyActivity;
 
@@ -43,6 +44,26 @@ public class TabHostActivity extends AppCompatActivity implements HomeMoneyCalen
 
     };
 
+    @Override
+    public void onSetDate(String date){
+        //callback function
+
+    }
+    @Override
+    public String onGetDate(){
+        //callback function
+        return null;
+    }
+    @Override
+    public void onSetAdapter(ItemMoneyCursorAdapter ItemAdapter){
+        //callback function
+
+    }
+    @Override
+    public ItemMoneyCursorAdapter ongetCursorAdapter(){
+        //callback function
+        return null;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

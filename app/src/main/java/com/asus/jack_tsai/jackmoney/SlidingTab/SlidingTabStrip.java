@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.asus.jack_tsai.jackmoney.SlidingTab;
+package com.asus.jack_tsai.jackmoney.slidingtab;
 
 import android.R;
 import android.content.Context;
@@ -26,7 +26,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.asus.jack_tsai.jackmoney.SlidingTab.SlidingTabLayout;
+import com.asus.jack_tsai.jackmoney.slidingtab.SlidingTabLayout;
 
 class SlidingTabStrip extends LinearLayout {
 

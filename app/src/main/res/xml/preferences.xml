@@ -24,17 +24,17 @@
 
     <PreferenceCategory
         android:title="Budget Setting">
-        <EditTextPreference
+        <com.asus.jack_tsai.jackmoney.EditIntegerPreference
             android:key="Preference_EditText_Daybudget"
             android:title="Type in your Day budget"
             android:summary="$Day Budget"
-            android:inputType="numberDecimal"/>
+            android:numeric="integer"/>
 
-        <EditTextPreference
+        <com.asus.jack_tsai.jackmoney.EditIntegerPreference
             android:key="Preference_EditText_Monthbudget"
             android:title="Type in your Month budget"
             android:summary="$Month Budget"
-            android:inputType="numberDecimal"/>
+            android:numeric="integer"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

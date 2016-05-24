@@ -21,6 +21,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -40,18 +41,27 @@
         <service
             android:name=".BackupService"
             android:enabled="true"
-            android:exported="true" />
+            />
 
         <receiver
             android:name=".DataChangeBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
+
                 <!-- 使用Action名稱設定接收的廣播事件 -->
-                <action android:name=
-                    "com.asus.jack_tsai.jackmoney.Broadcast.DataChange" />
+                <action android:name="com.asus.jack_tsai.jackmoney.Broadcast.DataChange" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name=".PictureFileContentProvider"
+            android:authorities="com.asus.jack_tsai.jackmoney.pictureProvider"
+            android:enabled="true"
+            android:exported="true"
+            android:grantUriPermissions="true">
+
+        </provider>
     </application>
 
 </manifest>

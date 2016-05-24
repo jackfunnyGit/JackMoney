@@ -1,12 +1,12 @@
 package com.asus.jack_tsai.jackmoney;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,11 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class MoneyAddActivity extends AppCompatActivity {
     //final string for others to use
@@ -36,6 +31,7 @@ public class MoneyAddActivity extends AppCompatActivity {
     public static final String ACTION="action";
     public static final int ACTION_EDIT= 1;
     public static final int ACTION_ADD= 0;
+    public static final int CAMERA_RESULT=0;
     //member field
     private  int mActionflag;
     private EditText mItemText,mPriceText,mCateText,mMemoText;
@@ -50,11 +46,11 @@ public class MoneyAddActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mItemText=(EditText)findViewById(R.id.editText_itemName);
-        mPriceText=(EditText)findViewById(R.id.editText_price);
-        mCateText=(EditText)findViewById(R.id.editText_Category);
-        mMemoText=(EditText)findViewById(R.id.editText_Memo);
-        mDateText=(TextView)findViewById(R.id.Date);
+        mItemText=(EditText)findViewById(R.id.edittext_itemname);
+        mPriceText=(EditText)findViewById(R.id.edittext_price);
+        mCateText=(EditText)findViewById(R.id.edittext_category);
+        mMemoText=(EditText)findViewById(R.id.edittext_memo);
+        mDateText=(TextView)findViewById(R.id.date);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
@@ -97,14 +93,14 @@ public class MoneyAddActivity extends AppCompatActivity {
        if (mActionflag==ACTION_ADD) {
            Uri uri = getContentResolver().insert(MoneyProvider.CONTENT_URI, values);
            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
-           Log.e("jackfunny", "MoneyAddActivity : insert into uri="+uri.toString());
+           Log.e("jackfunny", "MoneyAddActivity : insert into uri=" + uri.toString());
        }
        else if (mActionflag==ACTION_EDIT){
 
-           Uri uri_ItemPos =Uri.parse( MoneyProvider.URL+"/"+getIntent().getExtras().getInt(_ID));
-           getContentResolver().update(uri_ItemPos,values, null,null);
+           Uri uri_ItemPos =Uri.parse(MoneyProvider.URL + "/" + getIntent().getExtras().getInt(_ID));
+           getContentResolver().update(uri_ItemPos, values, null, null);
            Toast.makeText(getBaseContext(), uri_ItemPos.toString(), Toast.LENGTH_LONG).show();
-           Log.e("jackfunny", "update data "+uri_ItemPos.toString());
+           Log.e("jackfunny", "update data " + uri_ItemPos.toString());
            finish();
        }
        else {
@@ -117,24 +113,40 @@ public class MoneyAddActivity extends AppCompatActivity {
     }
 
     public void OpenCamera(View view){
-        Log.e("jackfunny", "OpenCamera ....");
+        Log.e("jackfunny", "OpenCamera .......");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 0);
+
+
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri );
+
+        startActivityForResult(intent, CAMERA_RESULT);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && requestCode == CAMERA_RESULT) {
             Bitmap mbmp = (Bitmap) data.getExtras().get("data");
             ImageView img =(ImageView ) findViewById(R.id.imagePic);
             img.setImageBitmap(mbmp);
+            String imgUri = MediaStore.Images.Media.insertImage(getContentResolver(), mbmp, null, null);
+            Log.e("jackfunny", "imgUri  = " + imgUri );
+            Log.e("jackfunny", "imgUri  = " + getFilePathByContentResolver(this,Uri.parse(imgUri)) );
+
+            /*
             try {
                 // 取得外部儲存裝置路徑
                 String path = Environment.getExternalStorageDirectory().toString();
-                Log.e("jackfunny","extenal path = "+path);
+
+                Log.e("jackfunny","extenal path = "+path+ " getFilesDir() = "+getFilesDir());
+                //開啟file
+                File file = new File( path, "JackMoney");
+                if(!file.exists()){
+                    file.mkdirs();
+                }
+
                 // 開啟檔案
-                File file = new File( path, "Image.png");
+
                 // 開啟檔案串流
                 FileOutputStream out = new FileOutputStream(file);
                 // 將 Bitmap壓縮成指定格式的圖片並寫入檔案串流
@@ -144,13 +156,36 @@ public class MoneyAddActivity extends AppCompatActivity {
                 // 刷新並關閉檔案串流
                 out.flush ();
                 out.close ();
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace ();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace ();
             }
+            */
+            /*File out = new File(getFilesDir(), "newImage.jpg");
+            Bitmap mBitmap = BitmapFactory.decodeFile(out.getAbsolutePath());
+            img.setImageBitmap(mBitmap);
+            */
         }
+    }
+    private  String getFilePathByContentResolver(Context context, Uri uri) {
+        if (null == uri) {
+            return null;
+        }
+        Cursor c = context.getContentResolver().query(uri, null, null, null, null);
+        String filePath  = null;
+        if (null == c) {
+            throw new IllegalArgumentException(
+                    "Query on " + uri + " returns null result.");
+        }
+        try {
+            if ((c.getCount() != 1) || !c.moveToFirst()) {
+            } else {
+                filePath = c.getString(
+                        c.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA));
+            }
+        } finally {
+            c.close();
+        }
+        return filePath;
     }
 }

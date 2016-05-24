@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/Item_Name"
+        android:id="@+id/item_Name"
         />
 
     <TextView
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/Category" />
+        android:id="@+id/category" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/Memo" />
+        android:id="@+id/memo" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -83,6 +83,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/Date" />
+        android:id="@+id/date" />
 
 </GridLayout>

@@ -8,7 +8,7 @@
     <color name="background">#ECDBA2</color>
     <color name="background_blue">#0099C1</color>
     <color name="background_blue2">#55CDF4</color>
-    <color name="background_wihte">#F8F8F8</color>
+    <color name="background_white">#F8F8F8</color>
     <!-- actionbar part -->
     <color name="pedo_actionbar_divider">#CECECE</color>
     <color name="pedo_actionbar_bkg">#F8F8F8</color>

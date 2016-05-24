@@ -4,7 +4,6 @@ package com.asus.jack_tsai.jackmoney;
 
 import android.content.Intent;
 import android.content.IntentSender;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -124,16 +123,30 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
 
         }
     }
-    public void onFragmentInteraction(Uri uri){
-        //callback fucntion
-
+    @Override
+    public void onSetDate(String date){
+        //callback function
+        mDate=date;
     }
-    public void setDate(String Date){mDate=Date;}
-    public String getDate() {return mDate;}
-    public void setActivityAdapter(TabFragmentPagerAdapter Adapter){mPagerAdapter=Adapter;}
-    public TabFragmentPagerAdapter getActivityAdapter(){return mPagerAdapter;}
-    public  void setCursorAdapter(ItemMoneyCursorAdapter itemMoneyCursorAdapter){mItemAdapter= itemMoneyCursorAdapter;}
-    public ItemMoneyCursorAdapter getCursorAdapter(){return mItemAdapter;}
+    @Override
+    public String onGetDate(){
+        //callback function
+        return mDate;
+    }
+    @Override
+    public void onSetAdapter(ItemMoneyCursorAdapter ItemAdapter){
+        //callback function
+        mItemAdapter= ItemAdapter;
+    }
+    @Override
+    public ItemMoneyCursorAdapter ongetCursorAdapter(){
+        //callback function
+        return mItemAdapter;
+    }
+    //public void setActivityAdapter(TabFragmentPagerAdapter Adapter){mPagerAdapter=Adapter;}
+    //public TabFragmentPagerAdapter getActivityAdapter(){return mPagerAdapter;}
+   // public  void setCursorAdapter(ItemMoneyCursorAdapter itemMoneyCursorAdapter){mItemAdapter= itemMoneyCursorAdapter;}
+    //public ItemMoneyCursorAdapter getCursorAdapter(){return mItemAdapter;}
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {

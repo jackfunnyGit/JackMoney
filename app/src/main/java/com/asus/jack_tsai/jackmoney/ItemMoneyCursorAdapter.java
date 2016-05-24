@@ -13,15 +13,18 @@ import android.widget.TextView;
  * Created by Jack_Tsai on 2016/5/4.
  */
 public class ItemMoneyCursorAdapter extends CursorAdapter {
+
+    private  LayoutInflater mLayoutInflater;
     public ItemMoneyCursorAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, flags);
+        mLayoutInflater = LayoutInflater.from(context);
     }
 
     // The newView method is used to inflate a new view and return it,
     // you don't bind any data to the view at this point.
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.dayview_item, parent, false);
+        return mLayoutInflater.inflate(R.layout.dayview_item, parent, false);
     }
 
     // The bindView method is used to bind all data to a given view
@@ -30,24 +33,24 @@ public class ItemMoneyCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         //Log.e("jackfunny","ItemMoneyCursorAdapter bindView");
         // Find fields to populate in inflated template
-        TextView tvName = (TextView) view.findViewById(R.id.Item_Name);
-        TextView tvPrice = (TextView) view.findViewById(R.id.price);
-        TextView tvCategory = (TextView) view.findViewById(R.id.Category);
-        TextView tvMemo = (TextView) view.findViewById(R.id.Memo);
-        TextView tvDate = (TextView) view.findViewById(R.id.Date);
+        TextView textViewName = (TextView) view.findViewById(R.id.item_Name);
+        TextView textViewPrice = (TextView) view.findViewById(R.id.price);
+        TextView textViewCategory = (TextView) view.findViewById(R.id.category);
+        TextView textViewMemo = (TextView) view.findViewById(R.id.memo);
+        TextView textViewDate = (TextView) view.findViewById(R.id.date);
         // Extract properties from cursor
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(MoneyProvider.NAME));
-        int price = cursor.getInt(cursor.getColumnIndexOrThrow(MoneyProvider.PRICE));
-        String category = cursor.getString(cursor.getColumnIndexOrThrow(MoneyProvider.CATEGORY));
-        String memo = cursor.getString(cursor.getColumnIndexOrThrow(MoneyProvider.MEMO));
-        String date = cursor.getString(cursor.getColumnIndexOrThrow(MoneyProvider.DATE));
+        String name = cursor.getString(cursor.getColumnIndex(MoneyProvider.NAME));
+        int price = cursor.getInt(cursor.getColumnIndex(MoneyProvider.PRICE));
+        String category = cursor.getString(cursor.getColumnIndex(MoneyProvider.CATEGORY));
+        String memo = cursor.getString(cursor.getColumnIndex(MoneyProvider.MEMO));
+        String date = cursor.getString(cursor.getColumnIndex(MoneyProvider.DATE));
         int id = cursor.getInt(cursor.getColumnIndexOrThrow(MoneyProvider._ID));
         // Populate fields with extracted properties
-        tvName.setText(name);
-        tvPrice.setText(""+price);
-        tvCategory.setText(category);
-        tvMemo.setText(memo);
-        tvDate.setText(date);
+        textViewName.setText(name);
+        textViewPrice.setText(String.format("%d", price));
+        textViewCategory.setText(category);
+        textViewMemo.setText(memo);
+        textViewDate.setText(date);
         view.setTag(id);
     }
 

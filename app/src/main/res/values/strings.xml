@@ -25,9 +25,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Tab message -->
     <string name="tab_home">home</string>
     <string name="tab_statistics">statistics</string>
     <string name="tab_setting">setting</string>
+    <!-- title Activity  message -->
     <string name="title_activity_second">SecondActivity</string>
     <string name="title_activity_money_add">MoneyAddActivity</string>
     <string name="title_activity_day_view">DayViewActivity</string>
