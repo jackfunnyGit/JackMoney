@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.asus.jack_tsai.jackmoney.slidingtab.SlidingTabLayout;
+import com.asus.jack_tsai.jackmoney.tabsliding.SlidingTabLayout;
 
 import java.util.ArrayList;
 

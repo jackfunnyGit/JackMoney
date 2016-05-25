@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.asus.jack_tsai.jackmoney.slidingtab;
+package com.asus.jack_tsai.jackmoney.tabsliding;
 
 import android.content.Context;
 import android.graphics.Typeface;
