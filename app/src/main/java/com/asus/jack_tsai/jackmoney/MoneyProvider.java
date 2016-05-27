@@ -1,6 +1,8 @@
 package com.asus.jack_tsai.jackmoney;
 
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -13,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,7 +32,9 @@ public class MoneyProvider extends ContentProvider {
     static final String CATEGORY = "category";
     static final String MEMO ="memo";
     static final String DATE ="date";
-
+    static final String IMAGE_DATA_PATH ="image_data_path";
+    static final String IMAGE_NAME="image";
+    static final String IMAGE_NAME_EXTENSION=".jpg";
     /**
      * Database specific constant declarations
      */
@@ -44,21 +49,17 @@ public class MoneyProvider extends ContentProvider {
                       PRICE +"  INTEGER DEFAULT 0 , "+
                     CATEGORY +"  TEXT NOT NULL, "+
                     MEMO+" TEXT,"+
-                    DATE+"  TEXT NOT NULL "+
+                    DATE+"  TEXT NOT NULL ,"+
+                    IMAGE_DATA_PATH+"  TEXT "+
                     "  );";
 
     static final String PROVIDER_NAME = "com.asus.jack_tsai.jackmoney.provider";
     static final String URL = "content://" + PROVIDER_NAME + "/"+Table1;
-   // static final String URL_ID = "content://" + PROVIDER_NAME + "/"+Table1+_ID;
     static final Uri CONTENT_URI = Uri.parse(URL);
-
-
-
-    private static HashMap<String, String> PROJECTION_MAP;
 
     static final int Table1_ALL = 1;
     static final int Table1_ID = 2;
-    static final int Table1_DATE = 3;
+
 
     static final UriMatcher uriMatcher;
     static{
@@ -108,7 +109,41 @@ public class MoneyProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
+
+        Log.e("jackfunny","MoneyProvider openFile: uri = "+uri+" mode = "+mode);
+
+        switch (uriMatcher.match(uri)){
+
+            case Table1_ID:
+                File file = queryForDataFile(uri);
+                switch (mode) {
+                    case "w":
+                        Log.e("jackfunny", "MoneyProvider openFile: Table1_ID...file path = " + file.toString());
+                        if (!file.exists()) {
+                            try {
+                                file.createNewFile();
+                                Log.e("jackfunny", "MoneyProvider openFile: Table1_ID...createNewFile :" + file.toString());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return (ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_WRITE_ONLY));
+                    case "r":
+                        return (ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY));
+                    default:
+                        throw new IllegalArgumentException("Unknown mode " + mode);
+                }
+
+
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+    }
+
+    @Override
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
 
         Log.e("jackfunny", "MoneyProvider insert , uri="+uri.toString());
         mDB = mDBHelper.getWritableDatabase();
@@ -119,7 +154,7 @@ public class MoneyProvider extends ContentProvider {
         if (rowID > 0)
         {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
-            //_uri or uri  ?????
+
             getContext().getContentResolver().notifyChange(_uri, null);
 
             return _uri;
@@ -128,7 +163,7 @@ public class MoneyProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Log.e("jackfunny", "MoneyProvider query , uri="+uri.toString());
         mDB = mDBHelper.getWritableDatabase();
@@ -163,7 +198,7 @@ public class MoneyProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         Log.e("jackfunny", "MoneyProvider delete  uri="+uri.toString());
         int count ;
         mDB = mDBHelper.getWritableDatabase();
@@ -174,11 +209,20 @@ public class MoneyProvider extends ContentProvider {
                 break;
             case Table1_ID:
                 String id = uri.getPathSegments().get(1);
-                Log.e("jackfunny","MoneyProvider delete.... in Case Table1_ID  uri.getPathSegments().get(0)="+uri.getPathSegments().get(0)+"uri.getPathSegments().get(1)= "+uri.getPathSegments().get(1));
+                try {
+                    File file = queryForDataFile(uri);
+                    if (file!=null&&file.exists()){
+                        Log.e("jackfunny","MoneyProvider delete.... in Case Table1_ID  delete file at path = "+file.toString());
+                        file.delete();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
                 count = mDB.delete( Table1, _ID +  " = " + id +
                         (!TextUtils.isEmpty(selection) ? " AND (" +
                                 selection + ')' : ""), selectionArgs);
-
+                Log.e("jackfunny","MoneyProvider delete.... in Case Table1_ID  delete count = "+count);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
@@ -214,7 +258,7 @@ public class MoneyProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         switch (uriMatcher.match(uri)){
             /**
              * Get all item records
@@ -228,6 +272,33 @@ public class MoneyProvider extends ContentProvider {
                 return "vnd.android.cursor.item/vnd.asus.jack_tsai.Jack_Money";
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
+        }
+    }
+    private  File queryForDataFile( Uri uri) throws FileNotFoundException{
+        Cursor cursor = getContext().getContentResolver().query(uri, new String[]{IMAGE_DATA_PATH}, null, null, null);
+
+        if (cursor == null) {
+            throw new FileNotFoundException("Missing cursor for " + uri);
+        }
+        try {
+            switch (cursor.getCount()) {
+                case 0:
+                    throw new FileNotFoundException("No entry for " + uri);
+                case 1:
+                    if (cursor.moveToFirst()) {
+                        String data = cursor.getString(0);
+                        if (TextUtils.isEmpty(data)) {
+                            throw new FileNotFoundException("not exist file at " + uri);
+                        }
+                        return new File(data);
+                    } else {
+                        throw new FileNotFoundException("Unable to read entry for " + uri);
+                    }
+                default:
+                    throw new FileNotFoundException("Multiple items at " + uri);
+            }
+        } finally {
+            cursor.close();
         }
     }
 }

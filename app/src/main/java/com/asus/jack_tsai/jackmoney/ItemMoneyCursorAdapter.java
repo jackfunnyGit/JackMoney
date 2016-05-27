@@ -1,13 +1,23 @@
 package com.asus.jack_tsai.jackmoney;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by Jack_Tsai on 2016/5/4.
@@ -15,8 +25,10 @@ import android.widget.TextView;
 public class ItemMoneyCursorAdapter extends CursorAdapter {
 
     private  LayoutInflater mLayoutInflater;
+    private  Context mContext;
     public ItemMoneyCursorAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, flags);
+        mContext =context;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -38,6 +50,7 @@ public class ItemMoneyCursorAdapter extends CursorAdapter {
         TextView textViewCategory = (TextView) view.findViewById(R.id.category);
         TextView textViewMemo = (TextView) view.findViewById(R.id.memo);
         TextView textViewDate = (TextView) view.findViewById(R.id.date);
+        ImageView imageview = (ImageView) view.findViewById(R.id.item_picture);
         // Extract properties from cursor
         String name = cursor.getString(cursor.getColumnIndex(MoneyProvider.NAME));
         int price = cursor.getInt(cursor.getColumnIndex(MoneyProvider.PRICE));
@@ -45,6 +58,7 @@ public class ItemMoneyCursorAdapter extends CursorAdapter {
         String memo = cursor.getString(cursor.getColumnIndex(MoneyProvider.MEMO));
         String date = cursor.getString(cursor.getColumnIndex(MoneyProvider.DATE));
         int id = cursor.getInt(cursor.getColumnIndexOrThrow(MoneyProvider._ID));
+
         // Populate fields with extracted properties
         textViewName.setText(name);
         textViewPrice.setText(String.format("%d", price));
@@ -52,6 +66,13 @@ public class ItemMoneyCursorAdapter extends CursorAdapter {
         textViewMemo.setText(memo);
         textViewDate.setText(date);
         view.setTag(id);
+        Uri uri_ItemPos =Uri.parse(String.format("%s/%d", MoneyProvider.URL, id));
+        ImageLoadAsyncTask imageLoadAsyncTask =new ImageLoadAsyncTask(mContext,imageview);
+        imageLoadAsyncTask.execute(uri_ItemPos);
+
+
+
+
     }
 
 }
