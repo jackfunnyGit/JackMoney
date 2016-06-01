@@ -19,6 +19,7 @@ import java.io.InputStream;
  * Created by Jack_Tsai on 2016/5/26.
  */
 public class ImageLoadAsyncTask extends AsyncTask<Uri,Void , Boolean> {
+    private static final int PARAMETER_INDEX_IMAGE_URI=0;
     private Context mContext;
     private ImageView mImageview;
     private Bitmap mBitmap;
@@ -30,14 +31,12 @@ public class ImageLoadAsyncTask extends AsyncTask<Uri,Void , Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-       // Log.e("jackfunny", "ImageLoadAsyncTask :  onPreExecute  ");
 
     }
 
     @Override
     protected Boolean doInBackground(Uri... params) {
-       // Log.e("jackfunny", "ImageLoadAsyncTask :  doInBackground :  uri= "+params[0]);
-        Uri uri= params[0];
+        Uri uri= params[PARAMETER_INDEX_IMAGE_URI];
         Cursor cursor = mContext.getContentResolver().query(uri, new String[]{MoneyProvider.IMAGE_DATA_PATH}, null, null, null);
         String imagepath= null;
         if (cursor != null &&cursor.moveToFirst())
@@ -68,10 +67,10 @@ public class ImageLoadAsyncTask extends AsyncTask<Uri,Void , Boolean> {
     @Override
     protected void onPostExecute(Boolean Boolean) {
         super.onPostExecute(Boolean);
-       // Log.e("jackfunny", "ImageLoadAsyncTask :  onPreExecute(boolean) boolean = "+Boolean );
-        if (mBitmap!=null&&Boolean)
+        if (mBitmap!=null&&Boolean) {
             mImageview.setImageBitmap(mBitmap);
-
+        }
+        else  mImageview.setImageResource(R.drawable.eating);
     }
 
 }

@@ -3,14 +3,11 @@ package com.asus.jack_tsai.jackmoney;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,17 +19,15 @@ import android.widget.TextView;
 
 
 
-public class HomeMoneyViewFragment extends HomeMoneyBaseFragment {
+public class HomeMoneyViewFragment extends Fragment {
     //static final field
-    private static final String Dialog_title="delete item";
-    private static final String Dialog_message="Are you sure to delete?";
-    private static final String Dialog_yes="Yes";
-    private static final String Dialog_no="No";
-
+    private static final String ACTION_ADD="com.asus.jack_tsai.jackmoney.ACTION_ADD";
+    private static final String ACTION_EDIT="com.asus.jack_tsai.jackmoney.ACTION_EDIT";
     //member field
     private ListView mListView;
     private FloatingActionButton mFab;
     private ItemMoneyCursorAdapter mItemAdapter;
+
 
     public interface OnFragmentInteractionListener {
 
@@ -43,20 +38,10 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment {
     private OnFragmentInteractionListener mListener;
 
     public HomeMoneyViewFragment() {
-        // Required empty public constructor
-        Log.e("jackfunny ", "HomeMoneyViewFragment() " + getId());
+        Log.e("jackfunny ", "HomeMoneyViewFragment constructor getid()= " + getId());
     }
 
 
-    public static HomeMoneyViewFragment newInstance(String param1,int IndicatorColor,int DividerColor,int IconId) {
-        Log.e("jackfunny ", "HomeMoneyViewFragment newInstance() ");
-        HomeMoneyViewFragment fragment = new HomeMoneyViewFragment();
-        fragment.setTitle(param1);
-        fragment.setIndicatorColor(IndicatorColor);
-        fragment.setDividerColor(DividerColor);
-        fragment.setIconResId(IconId);
-        return fragment;
-    }
     // TODO: Rename method, update argument and hook method into UI event
     public String getDateCallBack() {
         if (mListener != null) {
@@ -95,15 +80,16 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment {
     {
         super.onActivityCreated(savedInstanceState);
         Log.e("jackfunny", "HomeMoneyViewFragment onActivityCreated : " + getId());
+        final Context context = getContext();
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MoneyAddActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(MoneyAddActivity.DATE,getDateCallBack());
-                intent.putExtra(MoneyAddActivity.ACTION, MoneyAddActivity.ACTION_ADD);
+                bundle.putString(MoneyProvider.DATE,getDateCallBack());
+                intent.setAction(ACTION_ADD);
                 intent.putExtras(bundle);
-                getActivity().startActivity(intent);
+                startActivity(intent);
             }
         });
 
@@ -114,27 +100,18 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, final View view, final int position, long id) {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle(Dialog_title)
-                        .setMessage(Dialog_message)
-                        .setPositiveButton(Dialog_yes, new DialogInterface.OnClickListener() {
+                        .setTitle(context.getString(R.string.Dialog_Title))
+                        .setMessage(context.getString(R.string.Dialog_Message))
+                        .setPositiveButton(context.getString(R.string.Dialog_YES), new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                                 removeItem(view);
-                                /*
-                                String selection = MoneyProvider.DATE + " = ?";
-                                String[] whereArgs = new String[]{
-                                        "" + ((HomeMoneyActivity) getActivity()).getDate()
-                                };
 
-                                Cursor c = getActivity().getContentResolver().query(Uri.parse(MoneyProvider.URL), null, selection, whereArgs, null);
-                                mItemAdapter.changeCursor(c);
-                                mItemAdapter.notifyDataSetChanged();
-                                */
                             }
                         })
-                        .setNegativeButton(Dialog_no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(context.getString(R.string.Dialog_NO), new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -194,33 +171,16 @@ public class HomeMoneyViewFragment extends HomeMoneyBaseFragment {
     private void updateItem(View view){
         Intent intent = new Intent(getActivity(),MoneyAddActivity.class);
         Bundle bundle =new Bundle();
-        bundle.putInt(MoneyAddActivity._ID, (int) view.getTag());
-        bundle.putString(MoneyAddActivity.NAME, ((TextView) view.findViewById(R.id.item_Name)).getText().toString());
-        bundle.putString(MoneyAddActivity.PRICE, ((TextView) view.findViewById(R.id.price)).getText().toString());
-        bundle.putString(MoneyAddActivity.CATEGORY, ((TextView) view.findViewById(R.id.category)).getText().toString());
-        bundle.putString(MoneyAddActivity.MEMO, ((TextView) view.findViewById(R.id.memo)).getText().toString());
-        bundle.putString(MoneyAddActivity.DATE,((TextView)view.findViewById(R.id.date)).getText().toString());
-        intent.putExtra(MoneyAddActivity.ACTION, MoneyAddActivity.ACTION_EDIT);
+        bundle.putInt(MoneyProvider._ID, (int) view.getTag());
+        bundle.putString(MoneyProvider.NAME, ((TextView) view.findViewById(R.id.item_Name)).getText().toString());
+        bundle.putString(MoneyProvider.PRICE, ((TextView) view.findViewById(R.id.price)).getText().toString());
+        bundle.putString(MoneyProvider.CATEGORY, ((TextView) view.findViewById(R.id.category)).getText().toString());
+        bundle.putString(MoneyProvider.MEMO, ((TextView) view.findViewById(R.id.memo)).getText().toString());
+        bundle.putString(MoneyProvider.DATE,((TextView)view.findViewById(R.id.date)).getText().toString());
+        intent.setAction(ACTION_EDIT);
         intent.putExtras(bundle);
         getActivity().startActivity(intent);
 
     }
-
-   public void updateListView(){
-       /*String date=((HomeMoneyActivity) getActivity()).getDate();
-       String selection=MoneyProvider.DATE+" = ?";
-       String[] whereArgs = new String[] {
-               ""+((HomeMoneyActivity) getActivity()).getDate()
-       };
-       Uri Uri_Table1 = Uri.parse(MoneyProvider.URL);
-       Cursor c =  getActivity().getContentResolver().query(Uri_Table1, null, selection, whereArgs, null);
-
-
-       mItemAdapter.changeCursor(c);
-       mItemAdapter.notifyDataSetChanged();
-       */
-   }
-
-
 
 }

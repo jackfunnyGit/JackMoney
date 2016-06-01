@@ -4,137 +4,145 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.asus.jack_tsai.jackmoney.MoneyAddActivity"
-    tools:showIn="@layout/activity_money_add"
-    android:background="@color/background">
+    tools:showIn="@layout/activity_money_add">
 
     <TextView
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Date"
-        android:id="@+id/date"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-         />
-    <Space android:layout_width="match_parent"
+        android:text="@string/Date"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/date"
-        android:id="@+id/space"/>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/LinearLayout"
-    android:layout_below="@id/space"
-    >
+        android:layout_below="@id/date" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/space"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_name"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="wrap_content"
+            android:text="@string/Item_Name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/edittext_itemname"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:background="@android:drawable/edit_text" />
+
+        <TextView
+            android:layout_width="@dimen/text_width"
+            android:layout_height="wrap_content"
+            android:text="@string/Price"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/edittext_price"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:background="@android:drawable/edit_text"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="@dimen/text_width"
+            android:layout_height="wrap_content"
+            android:text="@string/Category"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/edittext_category"
+            android:layout_width="@dimen/text_width"
+            android:layout_height="@dimen/text_height"
+            android:background="@android:drawable/edit_text" />
+
+
+    </LinearLayout>
 
     <TextView
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Item_Name"
-        android:id="@+id/textView_name"/>
-
-    <EditText
-        android:id="@+id/edittext_itemname"
-        android:layout_height="@dimen/text_height"
-        android:layout_width="@dimen/text_width"
-        android:background="@android:drawable/edit_text"
-        />
-    <TextView
-        android:layout_width="@dimen/text_width"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Price" />
-    <EditText
-        android:id="@+id/edittext_price"
-        android:layout_height="@dimen/text_height"
-        android:layout_width="@dimen/text_width"
-        android:background="@android:drawable/edit_text"
-        android:inputType="number"/>
-    <TextView
-        android:layout_width="@dimen/text_width"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Category"/>
-    <EditText
-        android:id="@+id/edittext_category"
-        android:layout_height="@dimen/text_height"
-        android:layout_width="@dimen/text_width"
-        android:background="@android:drawable/edit_text"/>
-
-
-
-</LinearLayout>
-    <TextView
-        android:layout_width="@dimen/text_width"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Memo"
         android:id="@+id/MemoText"
-        android:layout_below="@id/LinearLayout"/>
+        android:layout_width="@dimen/text_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LinearLayout"
+        android:text="@string/Memo"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <EditText
         android:id="@+id/edittext_memo"
-        android:layout_height="60dp"
         android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/MemoText"
         android:background="@android:drawable/edit_text"
-        android:layout_below="@id/MemoText"/>
+        android:inputType="text" />
 
 
-    <Space android:layout_width="50dp"
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignBottom="@+id/LinearLayout"
-        android:layout_toRightOf="@+id/LinearLayout"
         android:layout_toEndOf="@+id/LinearLayout"
-        android:id="@+id/space2"/>
+        android:layout_toRightOf="@+id/LinearLayout" />
+
     <ImageButton
+        android:id="@+id/CameraButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="#00000000"
-        android:scaleType="fitXY"
-        android:id="@+id/CameraButton"
-        android:src="@drawable/camera_icon"
-        android:adjustViewBounds="true"
-        android:onClick="OpenCamera"
         android:layout_alignBottom="@+id/space2"
+        android:layout_toEndOf="@+id/space2"
         android:layout_toRightOf="@+id/space2"
-        android:layout_toEndOf="@+id/space2" />
+        android:adjustViewBounds="true"
+        android:background="#00000000"
+        android:onClick="OpenCamera"
+        android:scaleType="fitXY"
+        android:src="@drawable/camera_icon" />
 
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Save"
         android:id="@+id/Save_Button"
-        android:onClick="onOKpressed"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Cancel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:onClick="onOKpressed"
+        android:text="@string/Save" />
+
+    <Button
         android:id="@+id/Cancel_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/Save_Button"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:onClick="onCancelpressed"/>
+        android:layout_alignParentRight="true"
+        android:onClick="onCancelpressed"
+        android:text="@string/Cancel" />
 
     <ImageView
+        android:id="@+id/item_pic"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/item_pic"
         android:layout_below="@+id/edittext_memo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:background="@drawable/eating"/>
+        android:src="@drawable/eating" />
 
 
 </RelativeLayout>

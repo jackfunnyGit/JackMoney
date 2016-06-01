@@ -17,104 +17,99 @@ import java.io.IOException;
 /**
  * Created by Jack_Tsai on 2016/5/18.
  */
-public class ExportAsyncTask extends AsyncTask<String, Integer , Boolean> {
+public class ExportAsyncTask extends AsyncTask<String, Integer, Boolean> {
 
-    private Context context;
-    private ProgressDialog progressDialog;
+    private Context mContext;
+    private ProgressDialog mProgressDialog;
+    private static final int PARAMETER_INDEX_FILE_NAME = 0;
+    private static final int SLEEPTIME=100;
+    private static final int HUNDRED_PERCENT_COEFFICIENT=100;
+    private static final String COMMA_TEXT = ",";
 
-
-    public ExportAsyncTask(Context context) {
-        this.context = context;
-        progressDialog = new ProgressDialog(context);
+    public ExportAsyncTask(Context mContext) {
+        this.mContext = mContext;
+        mProgressDialog = new ProgressDialog(mContext);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         Log.e("jackfunny", "ExportAsyncTask :  onPreExecute  ");
-        progressDialog.setMessage("正在匯出Excel檔");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.show();
+        mProgressDialog.setMessage(mContext.getString(R.string.exoprt_csvfile));
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.show();
     }
-
 
 
     @Override
     protected Boolean doInBackground(String... params) {
-        String CSV_FILE_NAME = params[0];
-        Cursor cursor = context.getContentResolver().query(Uri.parse(MoneyProvider.URL), null, null, null, MoneyProvider.DATE);
+        String CSV_FILE_NAME = params[PARAMETER_INDEX_FILE_NAME];
+        Cursor cursor = mContext.getContentResolver().query(Uri.parse(MoneyProvider.URL), null, null, null, MoneyProvider.DATE);
+        if (cursor == null) {
+            return false;
+        }
         File sdCardDir = Environment.getExternalStorageDirectory();
         File saveFile = new File(sdCardDir, CSV_FILE_NAME);
         Log.e("jackfunny", "ExportAsyncTask doInBackground : saveFile path =  " + saveFile.toString());
-        FileWriter fw = null;
         try {
-            fw = new FileWriter(saveFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedWriter bw = null;
-        if (fw != null) {
-            bw = new BufferedWriter(fw);
-        }
-        int rowcount = cursor.getCount();
-        int colcount = cursor.getColumnCount();
-        try {
+            FileWriter fw = new FileWriter(saveFile);
+            BufferedWriter bw = new BufferedWriter(fw);
+            int rowcount = cursor.getCount();
+            int colcount = cursor.getColumnCount();
             if (rowcount > 0) {
                 cursor.moveToFirst();
                 for (int i = 0; i < colcount; i++) {
-
                     if (i != colcount - 1) {
-                        bw.write(cursor.getColumnName(i) + ",");
+                        bw.write(String.format("%s%s", cursor.getColumnName(i), COMMA_TEXT));
                     } else {
                         bw.write(cursor.getColumnName(i));
                     }
-
                 }
                 bw.newLine();
                 for (int i = 0; i < rowcount; i++) {
                     cursor.moveToPosition(i);
                     for (int j = 0; j < colcount; j++) {
-                        if (j != colcount - 1)
-                            bw.write(cursor.getString(j) + ",");
-                        else
+                        if (j != colcount - 1) {
+                            bw.write(String.format("%s%s", cursor.getString(j), COMMA_TEXT));
+                        } else {
                             bw.write(cursor.getString(j));
+                        }
                     }
                     bw.newLine();
-                    Thread.sleep(100);
-
-                    publishProgress((int) ((float) i/rowcount*100));
-
+                    Thread.sleep(SLEEPTIME);
+                    publishProgress(i * HUNDRED_PERCENT_COEFFICIENT / rowcount);
                 }
                 bw.flush();
-
             }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } finally {
+            cursor.close();
         }
-        cursor.close();
-    return true;
+        return true;
     }
 
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        Log.e("jackfunny", "ExportAsyncTask :  onProgressUpdate nowloading "+values[0]+"%");
-        progressDialog.setProgress(values[0]);
-
+        Log.e("jackfunny", "ExportAsyncTask :  onProgressUpdate nowloading " + values[0] + "%");
+        mProgressDialog.setProgress(values[0]);
     }
+
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
+    protected void onPostExecute(Boolean Boolean) {
+        super.onPostExecute(Boolean);
         Log.e("jackfunny", "ExportAsyncTask :  onPreExecute(boolean)  ");
-        if(progressDialog.isShowing())
-            progressDialog.dismiss();
-
-        if(!aBoolean)
-            Toast.makeText(context, "匯出失敗", Toast.LENGTH_SHORT).show();
-
+        if (mProgressDialog.isShowing())
+            mProgressDialog.dismiss();
+        if (!Boolean) {
+            Toast.makeText(mContext, mContext.getString(R.string.exoprt_csvfile), Toast.LENGTH_SHORT).show();
+        }
     }
 }

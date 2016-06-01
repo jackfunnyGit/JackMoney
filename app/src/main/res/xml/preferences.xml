@@ -3,38 +3,32 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 設置的類別 -->
-    <PreferenceCategory
-        android:key="mylocation"
-        android:summary="My Location"
-        android:title="My Location">
+    <PreferenceCategory android:title="@string/Preference_drive_title">
         <CheckBoxPreference
-            android:key="wireless_network"
-            android:summary="use internet to connect your doc"
-            android:title="open internet"/>
+            android:key="Preference_checkbox"
+            android:summary="@string/Preference_checkbox_summary"
+            android:title="@string/Preference_checkbox_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-
-        android:title="Personal Info">
+    <PreferenceCategory android:title="@string/Preference_personinfo_title">
         <EditTextPreference
             android:key="Preference_EditText_Username"
-            android:title="Type in your name"
-            android:summary="name"/>
+            android:summary="Preference_name_summary"
+            android:title="@string/Preference_name_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="Budget Setting">
+    <PreferenceCategory android:title="@string/Preference_budget_title">
         <com.asus.jack_tsai.jackmoney.EditIntegerPreference
             android:key="Preference_EditText_Daybudget"
-            android:title="Type in your Day budget"
-            android:summary="$Day Budget"
-            android:numeric="integer"/>
+            android:numeric="integer"
+            android:summary="@string/Preference_day_summary"
+            android:title="@string/Preference_day_title" />
 
         <com.asus.jack_tsai.jackmoney.EditIntegerPreference
             android:key="Preference_EditText_Monthbudget"
-            android:title="Type in your Month budget"
-            android:summary="$Month Budget"
-            android:numeric="integer"/>
+            android:numeric="integer"
+            android:summary="@string/Preference_month_summary"
+            android:title="@string/Preference_month_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

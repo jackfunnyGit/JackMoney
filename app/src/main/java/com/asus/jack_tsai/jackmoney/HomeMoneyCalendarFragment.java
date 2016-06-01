@@ -4,11 +4,10 @@ import android.content.Context;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.preference.PreferenceManager;
@@ -24,30 +23,23 @@ import java.util.Date;
 import java.util.Locale;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeMoneyCalendarFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeMoneyCalendarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class HomeMoneyCalendarFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // the fragment initialization parameters
-    private static final int DAYLOADER_ID =0;
-    private static final int MONTHLOADER_ID =1;
+    private static final int DAYLOADER_ID = 0;
+    private static final int MONTHLOADER_ID = 1;
+    private static final int PREFERENCE_DEFAULT_VALUE = 0;
     public static final SimpleDateFormat Dayformat;
     public static final SimpleDateFormat Monthformat;
-   static {
-       Monthformat =new SimpleDateFormat("yyyy-MM-", Locale.CHINESE);
-       Dayformat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
-   }
+
+    static {
+        Monthformat = new SimpleDateFormat("yyyy-MM-", Locale.CHINESE);
+        Dayformat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
+    }
 
     //member field
     private CalendarView mCalendarView;
     private TextView mDaytextview, mMonthtextview;
-    private int mDayBudget, mMonthBudget;
     private String mDate;
     private SharedPreferences mSp;
 
@@ -58,29 +50,23 @@ public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment implements 
         void onSetDate(String date);
         ItemMoneyCursorAdapter ongetCursorAdapter();
     }
+
     public HomeMoneyCalendarFragment() {
-        // Required empty public constructor
-        Log.e("jackfunny ", "HomeMoneyCalendarFragment() " + getId());
+
+        Log.e("jackfunny ", "HomeMoneyCalendarFragment constructor getid()= " + getId());
     }
 
-    public static HomeMoneyCalendarFragment newInstance(String title, int IndicatorColor, int DividerColor, int IconId) {
-        Log.e("jackfunny ", "HomeMoneyCalendarFragment newInstance() ");
-        HomeMoneyCalendarFragment fragment = new HomeMoneyCalendarFragment();
-        fragment.setTitle(title);
-        fragment.setIndicatorColor(IndicatorColor);
-        fragment.setDividerColor(DividerColor);
-        fragment.setIconResId(IconId);
-        return fragment;
-    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void SetDateCallBack(String date) {
         if (mListener != null) {
             mListener.onSetDate(date);
         }
     }
-    public ItemMoneyCursorAdapter getCursorAdapterCallBack(){
+
+    public ItemMoneyCursorAdapter getCursorAdapterCallBack() {
         if (mListener != null) {
-           return  mListener.ongetCursorAdapter();
+            return mListener.ongetCursorAdapter();
         }
         return null;
     }
@@ -90,9 +76,6 @@ public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment implements 
         super.onCreate(savedInstanceState);
         Log.e("jackfunny", "HomeMoneyCalendarFragment  : onCreate id= " + getId());
         // set today's date to mDate for initialization
-        mDate = Dayformat.format(new Date(System.currentTimeMillis()));
-        Log.e("jackfunny", "HomeMoneyCalendarFragment  : onCreate mdate=" + mDate);
-        SetDateCallBack(mDate);
 
     }
 
@@ -101,20 +84,17 @@ public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment implements 
                              Bundle savedInstanceState) {
         Log.e("jackfunny", "HomeMoneyCalendarFragment  : onCreateView id= " + getId());
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.homemoney_calendar_fragment, container, false);
-        mDaytextview = (TextView)view.findViewById(R.id.daytext_view);
-        mMonthtextview = (TextView)view.findViewById(R.id.monthtext_view);
+        View view = inflater.inflate(R.layout.homemoney_calendar_fragment, container, false);
+        mDaytextview = (TextView) view.findViewById(R.id.daytext_view);
+        mMonthtextview = (TextView) view.findViewById(R.id.monthtext_view);
         mCalendarView = (CalendarView) view.findViewById(R.id.calendar_view);
+        mDate = Dayformat.format(new Date(System.currentTimeMillis()));
+        Log.e("jackfunny", "HomeMoneyCalendarFragment  : onCreateView mdate=" + mDate);
+        SetDateCallBack(mDate);
+
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        Log.e("jackfunny", "HomeMoneyCalendarFragment  :onSaveInstanceState id= " + getId());
-        super.onSaveInstanceState(outState);
-        outState.putLong("mDate", mCalendarView.getDate());
-
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -122,28 +102,19 @@ public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment implements 
         Log.e("jackfunny", "HomeMoneyCalendarFragment onActivityCreated : id= " + getId());
         // read preference for day budget and month budget
         mSp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mDayBudget = mSp.getInt(SettingPrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET_KEY, 0);
-        mMonthBudget = mSp.getInt(SettingPrefFragment.PREFERENCE_EDITTEXT_MONTHBUDGET_KEY, 0);
-        Log.e("jackfunny", "HomeMoneyCalendarFragment  : onActivityCreated preference mDayBudget = " + mDayBudget + " MonthBudget= " + mMonthBudget);
-        //initialize the views
-        initView();
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 Log.e("jackfunny", "HomeMoneyCalendarFragment OnDateChange ");
                 mDate = Dayformat.format(new Date(mCalendarView.getDate()));
                 SetDateCallBack(mDate);
                 getActivity().getSupportLoaderManager().restartLoader(DAYLOADER_ID, null, HomeMoneyCalendarFragment.this);
-                getActivity().getSupportLoaderManager().restartLoader(MONTHLOADER_ID, null,HomeMoneyCalendarFragment.this);
+                getActivity().getSupportLoaderManager().restartLoader(MONTHLOADER_ID, null, HomeMoneyCalendarFragment.this);
 
                 //((HomeMoneyActivity) getActivity()).getActivityAdapter().notifyDataSetChanged();
                 Log.e("jackfunny", "date: [" + mDate + "] today is = " + new Date(mCalendarView.getDate()));
 
             }
         });
-        if (savedInstanceState!=null){
-            Log.e("jackfunny", "HomeMoneyCalendarFragment onActivityCreated savedInstanceState !=null " + mDate);
-            mCalendarView.setDate(savedInstanceState.getLong("mDate"));
-        }
         Log.e("jackfunny", "HomeMoneyCalendarFragment onActivityCreated today is " + mDate);
     }
 
@@ -156,10 +127,13 @@ public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment implements 
         getActivity().getSupportLoaderManager().initLoader(DAYLOADER_ID, null, this);
         getActivity().getSupportLoaderManager().initLoader(MONTHLOADER_ID, null, this);
     }
+
     @Override
     public void onPause() {
         super.onPause();
         Log.e("jackfunny", "HomeMoneyCalendarFragment  : onPause " + getId());
+        getActivity().getSupportLoaderManager().destroyLoader(DAYLOADER_ID);
+        getActivity().getSupportLoaderManager().destroyLoader(MONTHLOADER_ID);
 
     }
 
@@ -198,13 +172,6 @@ public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment implements 
         mListener = null;
     }
 
-    private void initView(){
-        mDaytextview.setText(getString(R.string.Day_Budget));
-        mDaytextview.append(String.format("%d", mDayBudget));
-        mMonthtextview.setText(getString(R.string.Month_Budget));
-        mMonthtextview.append(String.format("%d", mMonthBudget));
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         //String[] projection = {MoneyProvider._ID, MoneyProvider.NAME, MoneyProvider.DATE};
@@ -228,48 +195,61 @@ public class HomeMoneyCalendarFragment extends HomeMoneyBaseFragment implements 
                         String.format("%s%%", mdate)
                 };
                 return new CursorLoader(getContext(), MoneyProvider.CONTENT_URI, projection, selection, whereArgs, null);
-
             }
             default:
-                Log.e("jackfunny","CursorLoader has an unknown id");
+                Log.e("jackfunny", "CursorLoader has an unknown id");
                 return null;
         }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment)  onLoadFinished id= "+loader.getId());
+        Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment)  onLoadFinished id= " + loader.getId());
         //mItemAdapter.changeCursor(cursor);
         //mItemAdapter.notifyDataSetChanged();//not update view without this
         switch (loader.getId()) {
-            case  DAYLOADER_ID: {
-                int DayBudget =mSp.getInt(SettingPrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET_KEY, 0);
-
+            case DAYLOADER_ID: {
+                int DayBudget = mSp.getInt(SettingPrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET_KEY, PREFERENCE_DEFAULT_VALUE);
+                Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment) onLoadFinished id =" + loader.getId() + " Daybudget= " + DayBudget);
                 if (cursor.moveToFirst()) {
 
                     do {
-                        Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment) onLoadFinished id =0 price = " + cursor.getInt(cursor.getColumnIndex(MoneyProvider.PRICE)) + " Daybudget= " + DayBudget);
+                        Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment) onLoadFinished id =" + loader.getId() + " price = " + cursor.getInt(cursor.getColumnIndex(MoneyProvider.PRICE)));
                         DayBudget = DayBudget - cursor.getInt(cursor.getColumnIndex(MoneyProvider.PRICE));
                     } while (cursor.moveToNext());
                 }
+                Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment) onLoadFinished id =" + loader.getId() + " Daybudget= " + DayBudget);
                 mDaytextview.setText(getString(R.string.Day_Budget));
                 mDaytextview.append(String.format("%d", DayBudget));
+                if (DayBudget < 0) {
+                    mDaytextview.setTextColor(ContextCompat.getColor(getContext(), R.color.text_warning_color));
+                } else {
+                    mDaytextview.setTextColor(ContextCompat.getColor(getContext(), R.color.text_default_color));
+                }
                 getCursorAdapterCallBack().changeCursor(cursor);
                 getCursorAdapterCallBack().notifyDataSetChanged();//not update view without this
+                break;
             }
-            case  MONTHLOADER_ID: {
-                int MonthBudget =mSp.getInt(SettingPrefFragment.PREFERENCE_EDITTEXT_DAYBUDGET_KEY, 0);
+            case MONTHLOADER_ID: {
+                int MonthBudget = mSp.getInt(SettingPrefFragment.PREFERENCE_EDITTEXT_MONTHBUDGET_KEY, PREFERENCE_DEFAULT_VALUE);
+                Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment) onLoadFinished id =" + loader.getId() + " Monthbudget= " + MonthBudget);
                 if (cursor.moveToFirst()) {
                     do {
-
+                        Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment) onLoadFinished id =" + loader.getId() + " price = " + cursor.getInt(cursor.getColumnIndex(MoneyProvider.PRICE)));
                         MonthBudget = MonthBudget - cursor.getInt(cursor.getColumnIndex(MoneyProvider.PRICE));
 
                     } while (cursor.moveToNext());
                 }
+                Log.e("jackfunny", "Loader(HomeMoneyCalendarFragment) onLoadFinished id =" + loader.getId() + " Monthbudget(after)= " + MonthBudget);
                 mMonthtextview.setText(getString(R.string.Month_Budget));
                 mMonthtextview.append(String.format("%d", MonthBudget));
+                if (MonthBudget < 0) {
+                    mMonthtextview.setTextColor(ContextCompat.getColor(getContext(), R.color.text_warning_color));
+                } else {
+                    mMonthtextview.setTextColor(ContextCompat.getColor(getContext(), R.color.text_default_color));
+                }
 
-
+                break;
             }
         }
     }

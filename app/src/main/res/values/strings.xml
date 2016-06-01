@@ -5,7 +5,6 @@
     <string name="action_export">export</string>
     <string name="action_upload">Upload</string>
     <string name="action_download">Download</string>
-
     <!-- view object name text -->
     <string name="OK">OK</string>
     <string name="Save">Save</string>
@@ -18,13 +17,13 @@
     <string name="Day_Budget">Day Budget remaining \n $ </string>
     <string name="Month_Budget">Month Budget remaining \n $ </string>
     <!-- Dialog message -->
-    <string name="title">Delete Item</string>
-    <string name="DialogMessage">Are you sure to delete?</string>
-    <string name="YES">YES</string>
-    <string name="NO">NO</string>
+    <string name="Dialog_Title">Delete Item</string>
+    <string name="Dialog_Message">Are you sure to delete?</string>
+    <string name="Dialog_YES">YES</string>
+    <string name="Dialog_NO">NO</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="Medium_text">Medium_text</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- Tab message -->
     <string name="tab_home">home</string>
     <string name="tab_statistics">statistics</string>
@@ -34,4 +33,30 @@
     <string name="title_activity_money_add">MoneyAddActivity</string>
     <string name="title_activity_day_view">DayViewActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <!-- ProgressDialog  message -->
+    <string name="exoprt_csvfile">start exporting csv file …</string>
+    <string name="export_failure">export failure</string>
+    <!-- Toast  message -->
+    <string name="Toast_wrong_syntax">wrong_syntax!!!</string>
+    <string name="Toast_connection_failed">Connection failed Error cannot be resolved</string>
+    <string name="Toast_service_done">Service done</string>
+    <string name="Toast_drive_connect_success">Connected successfully!!</string>
+    <string name="Toast_drive_connect_suspended">Connected suspended!!</string>
+    <string name="Toast_drive_disconnect">disconnected !!</string>
+    <string name="Toast_BackupService_Received_start_id">BackupService Received start id </string>
+    <string name="Toast_BackupService_Received_ACTION"> ACTION = </string>
+
+    <!-- Preference text -->
+    <string name="Preference_month_title">Type in your Month budget</string>
+    <string name="Preference_day_title">Type in your Day budget</string>
+    <string name="Preference_name_title">Type in your Name</string>
+    <string name="Preference_month_summary">$Month Budget</string>
+    <string name="Preference_day_summary">$Day Budget</string>
+    <string name="Preference_name_summary">name</string>
+    <string name="Preference_budget_title">Budget Setting</string>
+    <string name="Preference_personinfo_title">Personal Info</string>
+    <string name="Preference_drive_title">Google Drive Account</string>
+    <string name="Preference_checkbox_title">Connect to Drive</string>
+    <string name="Preference_checkbox_summary">check  agree to connect to drive</string>
+
 </resources>

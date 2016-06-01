@@ -14,8 +14,11 @@
     <color name="pedo_actionbar_bkg">#F8F8F8</color>
     <!-- tab part -->
     <color name="tab_text_blue">#29ABE2</color>
-    <!-- tab part2 -->
-    <color name="color_primary">#F44336</color>
+    <color name="indicator_color">#F40000</color>
+    <!-- Text color -->
+    <color name="text_warning_color">#F40000</color>
+    <color name="text_default_color">#000000</color>
+
 
 
 </resources>

@@ -1,12 +1,9 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragmet2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="35dip"
-    android:id="@+id/fragmet2"
     android:background="@color/background">
-
 
     <ListView
         android:id="@+id/daylist"
@@ -14,16 +11,15 @@
         android:layout_height="match_parent"
         android:divider="#ffff0000"
         android:dividerHeight="2dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:backgroundTint="@color/colorAccent"
-        app:rippleColor="@color/background_blue"
-        android:src="@drawable/add"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:src="@drawable/add"
+        app:backgroundTint="@color/colorAccent" />
 
 </RelativeLayout>

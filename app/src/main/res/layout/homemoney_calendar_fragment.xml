@@ -1,53 +1,46 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="35dip"
-    android:id="@+id/fragment1"
+    android:background="@color/background"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="@color/background">
+    android:paddingTop="35dp">
 
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/linearLayoutup"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayoutup">
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/Day_Budget"
             android:id="@+id/daytext_view"
-            android:background="@color/background1"
-            />
-        <Space android:layout_width="10dp"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/Month_Budget"
+            android:background="@color/background1"
+            android:text="@string/Day_Budget"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <TextView
             android:id="@+id/monthtext_view"
-            android:background="@color/background1"/>
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:background="@color/background1"
+            android:text="@string/Month_Budget"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
     <CalendarView
+        android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayoutup"
-        android:id="@+id/calendar_view" />
-
-
-
-
-
+        android:layout_below="@+id/linearLayoutup" />
 
 </RelativeLayout>
