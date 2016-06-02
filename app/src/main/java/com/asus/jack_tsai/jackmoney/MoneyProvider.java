@@ -26,23 +26,21 @@ import android.util.Log;
 public class MoneyProvider extends ContentProvider {
 
 
-    static final String _ID = "_id";
-    static final String NAME = "name";
-    static final String PRICE = "price";
-    static final String CATEGORY = "category";
-    static final String MEMO ="memo";
-    static final String DATE ="date";
-    static final String IMAGE_DATA_PATH ="image_data_path";
-    static final String IMAGE_NAME="image";
-    static final String IMAGE_NAME_EXTENSION=".jpg";
+    public static final String _ID = "_id";
+    public static final String NAME = "name";
+    public static final String PRICE = "price";
+    public static final String CATEGORY = "category";
+    public static final String MEMO ="memo";
+    public static final String DATE ="date";
+    public static final String IMAGE_DATA_PATH ="image_data_path";
     /**
      * Database specific constant declarations
      */
     private SQLiteDatabase mDB;
-    static final String DATABASE_NAME = "Jack_Money";
-    static final String Table1 = "Table_Money";
-    static final int DATABASE_VERSION = 1;
-    static final String CREATE_DB_TABLE =
+    public static final String DATABASE_NAME = "Jack_Money";
+    public static final String Table1 = "Table_Money";
+    public static final int DATABASE_VERSION = 1;
+    public static final String CREATE_DB_TABLE =
             " CREATE TABLE " + Table1 +
                     " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                      + NAME +"  TEXT NOT NULL, "+
@@ -53,12 +51,12 @@ public class MoneyProvider extends ContentProvider {
                     IMAGE_DATA_PATH+"  TEXT "+
                     "  );";
 
-    static final String PROVIDER_NAME = "com.asus.jack_tsai.jackmoney.provider";
-    static final String URL = "content://" + PROVIDER_NAME + "/"+Table1;
-    static final Uri CONTENT_URI = Uri.parse(URL);
+    public static final String PROVIDER_NAME = "com.asus.jack_tsai.jackmoney.provider";
+    public static final String URL = "content://" + PROVIDER_NAME + "/"+Table1;
+    public static final Uri CONTENT_URI = Uri.parse(URL);
 
-    static final int Table1_ALL = 1;
-    static final int Table1_ID = 2;
+    private static final int Table1_ALL = 1;
+    private static final int Table1_ID = 2;
 
 
     static final UriMatcher uriMatcher;
