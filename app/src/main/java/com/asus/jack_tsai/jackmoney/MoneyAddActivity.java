@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -19,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,14 +24,14 @@ import java.io.OutputStream;
 public class MoneyAddActivity extends AppCompatActivity {
 
 
-    //action
-    private static final String ACTION_ADD = "com.asus.jack_tsai.jackmoney.ACTION_ADD";
-    private static final String ACTION_EDIT = "com.asus.jack_tsai.jackmoney.ACTION_EDIT";
     public static final int ACTION_EDIT_FLAG = 1;
     public static final int ACTION_ADD_FLAG = 0;
     public static final int ACTION_WRONG_FLAG = -1;
     public static final int CAMERA_RESULT = 0;
     public static final String FILENAME_EXTENSION = ".jpg";
+    //action
+    private static final String ACTION_ADD = "com.asus.jack_tsai.jackmoney.ACTION_ADD";
+    private static final String ACTION_EDIT = "com.asus.jack_tsai.jackmoney.ACTION_EDIT";
     //member field
     private int mActionflag = ACTION_WRONG_FLAG;
     private EditText mItemText, mPriceText, mCateText, mMemoText;
@@ -70,7 +67,8 @@ public class MoneyAddActivity extends AppCompatActivity {
             mMemoText.setText(bundle.getString(MoneyProvider.MEMO));
             mDate = bundle.getString(MoneyProvider.DATE);
             mDateText.setText(mDate);
-            Uri uri_ItemPos = Uri.parse(String.format("%s/%d", MoneyProvider.URL, getIntent().getExtras().getInt(MoneyProvider._ID)));
+            Uri uri_ItemPos = Uri.parse(String.format("%s/%d", MoneyProvider.URL, getIntent()
+                    .getExtras().getInt(MoneyProvider._ID)));
             ImageLoadAsyncTask imageLoadAsyncTask = new ImageLoadAsyncTask(this, mImageView);
             imageLoadAsyncTask.execute(uri_ItemPos);
         } else {
@@ -79,7 +77,8 @@ public class MoneyAddActivity extends AppCompatActivity {
     }
 
     public void onOKpressed(View view) {
-        String FilePath = String.format("%s/%d%s", getFilesDir().toString(), System.currentTimeMillis(), FILENAME_EXTENSION);
+        String FilePath = String.format("%s/%d%s", getFilesDir().toString(), System
+                .currentTimeMillis(), FILENAME_EXTENSION);
         ContentValues values = new ContentValues();
         values.put(MoneyProvider.NAME, mItemText.getText().toString());
         values.put(MoneyProvider.PRICE, mPriceText.getText().toString());
@@ -100,7 +99,8 @@ public class MoneyAddActivity extends AppCompatActivity {
             Log.e("jackfunny", "MoneyAddActivity : insert into filePath=" + FilePath);
             finish();
         } else if (mActionflag == ACTION_EDIT_FLAG) {
-            Uri uri_ItemPos = Uri.parse(String.format("%s/%d", MoneyProvider.URL, getIntent().getExtras().getInt(MoneyProvider._ID)));
+            Uri uri_ItemPos = Uri.parse(String.format("%s/%d", MoneyProvider.URL, getIntent()
+                    .getExtras().getInt(MoneyProvider._ID)));
             //if user take a picture ,mBitmap will not be null
             if (mBitmap != null) {
                 if (URI_ImageisEmpty(uri_ItemPos)) {
@@ -174,7 +174,8 @@ public class MoneyAddActivity extends AppCompatActivity {
     }
 
     private boolean URI_ImageisEmpty(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, new String[]{MoneyProvider.IMAGE_DATA_PATH}, null, null, null);
+        Cursor cursor = getContentResolver().query(uri, new String[]{MoneyProvider
+                .IMAGE_DATA_PATH}, null, null, null);
         if (cursor == null) {
             return true;
         }

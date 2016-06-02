@@ -8,15 +8,14 @@ package com.asus.jack_tsai.jackmoney;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
 
 public class SettingPrefFragment extends PreferenceFragmentCompat {
     public static final String PREFERENCE_EDITTEXT_DAYBUDGET_KEY = "Preference_EditText_Daybudget";
-    public static final String PREFERENCE_EDITTEXT_MONTHBUDGET_KEY = "Preference_EditText_Monthbudget";
+    public static final String PREFERENCE_EDITTEXT_MONTHBUDGET_KEY =
+            "Preference_EditText_Monthbudget";
     public static final String PREFERENCE_EDITTEXT_USERNAME_KEY = "Preference_EditText_Username";
     public static final String PREFERENCE_CHECKBOX_KEY = "Preference_checkbox";
     public static final int PREFERENCE_EDITTEXT_DFAULTVALUE = 0;
@@ -26,11 +25,6 @@ public class SettingPrefFragment extends PreferenceFragmentCompat {
     //Menber field
     private SharedPreferences mSp;
     private settingcallback mListener;
-
-    public interface settingcallback {
-      void connectCallback();
-      void disconnectCallback();
-    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -54,7 +48,10 @@ public class SettingPrefFragment extends PreferenceFragmentCompat {
         mSp = getPreferenceManager().getSharedPreferences();
         setPreferenceBudget(PREFERENCE_EDITTEXT_DAYBUDGET_KEY);
         setPreferenceBudget(PREFERENCE_EDITTEXT_MONTHBUDGET_KEY);
-        findPreference(PREFERENCE_EDITTEXT_USERNAME_KEY).setSummary(mSp.getString(PREFERENCE_EDITTEXT_USERNAME_KEY, mSp.getString(PREFERENCE_EDITTEXT_USERNAME_KEY, PREFERENCE_EDITTEXT_USERNAME_DFAULTTEXT)));
+        findPreference(PREFERENCE_EDITTEXT_USERNAME_KEY).setSummary(mSp.getString
+                (PREFERENCE_EDITTEXT_USERNAME_KEY, mSp.getString
+                        (PREFERENCE_EDITTEXT_USERNAME_KEY,
+                                PREFERENCE_EDITTEXT_USERNAME_DFAULTTEXT)));
         findPreference(PREFERENCE_EDITTEXT_USERNAME_KEY).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
             @Override
@@ -66,7 +63,8 @@ public class SettingPrefFragment extends PreferenceFragmentCompat {
             }
 
         });
-        findPreference(PREFERENCE_CHECKBOX_KEY).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        findPreference(PREFERENCE_CHECKBOX_KEY).setOnPreferenceChangeListener(new Preference
+                .OnPreferenceChangeListener() {
 
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -90,8 +88,10 @@ public class SettingPrefFragment extends PreferenceFragmentCompat {
 
     private void setPreferenceBudget(String key) {
         EditIntegerPreference editTextPreference = (EditIntegerPreference) findPreference(key);
-        editTextPreference.setSummary(String.format("$ %d", mSp.getInt(key, PREFERENCE_EDITTEXT_DFAULTVALUE)));
-        editTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        editTextPreference.setSummary(String.format("$ %d", mSp.getInt(key,
+                PREFERENCE_EDITTEXT_DFAULTVALUE)));
+        editTextPreference.setOnPreferenceChangeListener(new Preference
+                .OnPreferenceChangeListener() {
 
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -107,15 +107,22 @@ public class SettingPrefFragment extends PreferenceFragmentCompat {
         });
 
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.e("jackfunny", "HomeMoneyViewFragment  : onAttach" + getId());
+        Log.e("jackfunny", "SettingPreFragment  : onAttach" + getId());
         if (context instanceof settingcallback) {
             mListener = (settingcallback) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement callback");
         }
+    }
+
+    public interface settingcallback {
+        void connectCallback();
+
+        void disconnectCallback();
     }
 }

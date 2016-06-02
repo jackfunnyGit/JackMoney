@@ -20,16 +20,19 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
 
-public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCalendarFragment.OnFragmentInteractionListener, HomeMoneyViewFragment.OnFragmentInteractionListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SettingPrefFragment.settingcallback {
-    static public GoogleApiClient mGoogleApiClient;
-    private String mDate;
-    private ItemMoneyCursorAdapter mItemAdapter;
-    private boolean mResolvingError = false;
-    private static final int DIALOG_ERROR_CODE = 100;
+public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCalendarFragment
+        .OnFragmentInteractionListener, HomeMoneyViewFragment.OnFragmentInteractionListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        SettingPrefFragment.settingcallback {
     public static final String UPLOADACTION = "com.asus.jack_tsai.jackmoney.uplaod_action";
     public static final String DOWNLOADACTION = "com.asus.jack_tsai.jackmoney.downlaod_action";
     public static final String CSV_FILE_NAME_EXTENSION = ".csv";
     public static final String SETTING_FRAGMENT_TAG = "setting_prefFragment";
+    private static final int DIALOG_ERROR_CODE = 100;
+    static public GoogleApiClient mGoogleApiClient;
+    private String mDate;
+    private ItemMoneyCursorAdapter mItemAdapter;
+    private boolean mResolvingError = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,7 +46,8 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
         switch (item.getItemId()) {
             case R.id.action_download:
                 //TODO download
-                Log.e("jackfunny", "onOptionsItemSelected  mainThread = " + Thread.currentThread().getId());
+                Log.e("jackfunny", "onOptionsItemSelected  mainThread = " + Thread.currentThread
+                        ().getId());
                 if (mGoogleApiClient.isConnected()) {
                     Intent intent = new Intent(this, BackupService.class);
                     intent.setAction(DOWNLOADACTION);
@@ -62,11 +66,13 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
                 //TODO setting
                 Log.e("jackfunny", "onOptionsItemSelected  R.id.action_settings ...");
                 if (getSupportFragmentManager().findFragmentByTag(SETTING_FRAGMENT_TAG) == null) {
-                    Log.e("jackfunny", "R.id.action_settings FindFragmentByTag(setting_prefFragment)==null !!!!");
+                    Log.e("jackfunny", "R.id.action_settings FindFragmentByTag" +
+                            "(setting_prefFragment)==null !!!!");
                     SettingPrefFragment settingPrefFragment = new SettingPrefFragment();
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content_fragment, settingPrefFragment, SETTING_FRAGMENT_TAG)
+                            .replace(R.id.content_fragment, settingPrefFragment,
+                                    SETTING_FRAGMENT_TAG)
                             .addToBackStack(null)
                             .commit();
                 }
@@ -75,8 +81,11 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
                 //TODO export
                 Log.e("jackfunny", "onOptionsItemSelected  R.id.action_export ...");
                 ExportAsyncTask exportAsyncTask = new ExportAsyncTask(this);
-                String csvFileName = PreferenceManager.getDefaultSharedPreferences(this).getString(SettingPrefFragment.PREFERENCE_EDITTEXT_USERNAME_KEY, SettingPrefFragment.PREFERENCE_EDITTEXT_USERNAME_DFAULTTEXT);
-                exportAsyncTask.execute(String.format("%s%s", csvFileName, CSV_FILE_NAME_EXTENSION));
+                String csvFileName = PreferenceManager.getDefaultSharedPreferences(this)
+                        .getString(SettingPrefFragment.PREFERENCE_EDITTEXT_USERNAME_KEY,
+                                SettingPrefFragment.PREFERENCE_EDITTEXT_USERNAME_DFAULTTEXT);
+                exportAsyncTask.execute(String.format("%s%s", csvFileName,
+                        CSV_FILE_NAME_EXTENSION));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -97,7 +106,9 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        boolean connection = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingPrefFragment.PREFERENCE_CHECKBOX_KEY, SettingPrefFragment.PREFERENCE_CHECKBOX_DEFAULT_VALUE);
+        boolean connection = PreferenceManager.getDefaultSharedPreferences(this).getBoolean
+                (SettingPrefFragment.PREFERENCE_CHECKBOX_KEY, SettingPrefFragment
+                        .PREFERENCE_CHECKBOX_DEFAULT_VALUE);
         if (connection) {
             if (!mResolvingError) {
                 mGoogleApiClient.connect(); // Connect the client to Google Drive
@@ -166,7 +177,8 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
     public void disconnectCallback() {
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
-            Toast.makeText(this, getString(R.string.Toast_drive_disconnect), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Toast_drive_disconnect), Toast.LENGTH_SHORT)
+                    .show();
         }
 
     }
@@ -177,7 +189,8 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
         Log.e("jackfunny", "Connection failed");
         if (mResolvingError) { // If already in resolution state, just return.
             return;
-        } else if (result.hasResolution()) { // Error can be resolved by starting an intent with user interaction
+        } else if (result.hasResolution()) { // Error can be resolved by starting an intent with
+            // user interaction
             mResolvingError = true;
             try {
                 result.startResolutionForResult(this, DIALOG_ERROR_CODE);
@@ -186,7 +199,8 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
                 e.printStackTrace();
             }
         } else { // Error cannot be resolved. Display Error Dialog stating the reason if possible.
-            Toast.makeText(this, getString(R.string.Toast_connection_failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Toast_connection_failed), Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -194,7 +208,8 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == DIALOG_ERROR_CODE) {
             mResolvingError = false;
-            if (resultCode == RESULT_OK) { // Error was resolved, now connect to the client if not done so.
+            if (resultCode == RESULT_OK) { // Error was resolved, now connect to the client if
+                // not done so.
                 if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()) {
                     mGoogleApiClient.connect();
                 }
@@ -205,14 +220,16 @@ public class HomeMoneyActivity extends AppCompatActivity implements HomeMoneyCal
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.e("jackfunny", "Connected successfully");
-        Toast.makeText(this, getString(R.string.Toast_drive_connect_success), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.Toast_drive_connect_success), Toast.LENGTH_SHORT)
+                .show();
     }
 
 
     @Override
     public void onConnectionSuspended(int cause) {
         Log.e("jackfunny", "Connection suspended");
-        Toast.makeText(this, getString(R.string.Toast_drive_connect_suspended), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.Toast_drive_connect_suspended), Toast
+                .LENGTH_SHORT).show();
     }
 
 

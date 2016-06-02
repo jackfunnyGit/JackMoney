@@ -17,11 +17,12 @@ import android.widget.TextView;
  */
 public class ItemMoneyCursorAdapter extends CursorAdapter {
 
-    private  LayoutInflater mLayoutInflater;
-    private  Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private Context mContext;
+
     public ItemMoneyCursorAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, flags);
-        mContext =context;
+        mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -59,11 +60,9 @@ public class ItemMoneyCursorAdapter extends CursorAdapter {
         textViewMemo.setText(memo);
         textViewDate.setText(date);
         view.setTag(id);
-        Uri uri_ItemPos =Uri.parse(String.format("%s/%d", MoneyProvider.URL, id));
-        ImageLoadAsyncTask imageLoadAsyncTask =new ImageLoadAsyncTask(mContext,imageview);
+        Uri uri_ItemPos = Uri.parse(String.format("%s/%d", MoneyProvider.URL, id));
+        ImageLoadAsyncTask imageLoadAsyncTask = new ImageLoadAsyncTask(mContext, imageview);
         imageLoadAsyncTask.execute(uri_ItemPos);
-
-
 
 
     }

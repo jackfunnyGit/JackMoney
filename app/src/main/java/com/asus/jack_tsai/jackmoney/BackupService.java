@@ -38,13 +38,15 @@ import java.util.zip.ZipOutputStream;
 
 public class BackupService extends Service {
 
-    public static final String BROADCAST_ACTION = "com.asus.jack_tsai.jackmoney.Broadcast.DataChange";
+    public static final String BROADCAST_ACTION = "com.asus.jack_tsai.jackmoney.Broadcast" +
+            ".DataChange";
     public static final String BROADCAST_URL_KEY = "url_key";
     public static final String UPLOADACTION = "com.asus.jack_tsai.jackmoney.uplaod_action";
     public static final String DOWNLOADACTION = "com.asus.jack_tsai.jackmoney.downlaod_action";
     private static final String GOOGLE_DRIVE_FILE_NAME = "JackMoney_backup.zip";
-    private static final String BACKUP_FILE_ZIP_NAME="JackMoney.zip";
-    private static final int  BUFFER_SIZE = 1024;
+    private static final String BACKUP_FILE_ZIP_NAME = "JackMoney.zip";
+    private static final String EXTENSION_MINE_TYPE="db";
+    private static final int BUFFER_SIZE = 1024;
     //member field
     private GoogleApiClient mGoogleapiClient;
     private DriveFile mfile;
@@ -60,7 +62,10 @@ public class BackupService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("jackfunny", "BackupService Received start id " + startId + ": " + intent);
-        Toast.makeText(this, String.format("%s%d%s%s", getString(R.string.Toast_BackupService_Received_start_id), startId, getString(R.string.Toast_BackupService_Received_ACTION), intent.getAction()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, String.format("%s%d%s%s", getString(R.string
+                .Toast_BackupService_Received_start_id), startId, getString(R.string
+                .Toast_BackupService_Received_ACTION), intent.getAction()), Toast.LENGTH_SHORT)
+                .show();
         //adjust in the future
         mGoogleapiClient = HomeMoneyActivity.mGoogleApiClient;
 
@@ -75,7 +80,6 @@ public class BackupService extends Service {
         return START_NOT_STICKY;
     }
 
-
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -88,45 +92,6 @@ public class BackupService extends Service {
         super.onDestroy();
         Log.e("jackfunny", "BackupServie onDestroy:");
         Toast.makeText(this, getString(R.string.Toast_service_done), Toast.LENGTH_SHORT).show();
-    }
-
-    class DownloadThread extends Thread {
-
-        //projected startID
-        private int startId = 0;
-
-        public DownloadThread(int startId) {
-            this.startId = startId;
-
-        }
-
-        @Override
-        public void run() {
-            Log.e("jackfunny", "download Thread run(" + startId + ")...");
-            Log.e("jackfunny", "downloading run thread = " + Thread.currentThread().getId());
-            downloadDriveBackup();
-            Log.e("jackfunny", "download done stopSelf(" + startId + ")");
-            stopSelf(startId);
-        }
-    }
-
-    class UploadThread extends Thread {
-
-        //projected startID
-        private int startId = 0;
-        public UploadThread(int startId) {
-            this.startId = startId;
-        }
-
-        @Override
-        public void run() {
-            Log.e("jackfunny", "upload Thread run(" + startId + ")");
-            Log.e("jackfunnyZip", "upload Thread run ZipBackupFile...");
-            ZipBackupFile();
-            uploadDriveBackupFile();
-            Log.e("jackfunny", "upload done and stopSelf(" + startId + ")");
-            stopSelf(startId);
-        }
     }
 
     private void uploadDriveBackupFile() {
@@ -145,20 +110,24 @@ public class BackupService extends Service {
                 if (count > 0) {
                     DriveId driveId = metadataBufferResult.getMetadataBuffer().get(0).getDriveId();
                     Log.e("jackfunny", "driveID = " + driveId);
-                    Log.e("jackfunny", "filesize in cloud " + metadataBufferResult.getMetadataBuffer().get(0).getFileSize());
+                    Log.e("jackfunny", "filesize in cloud " + metadataBufferResult
+                            .getMetadataBuffer().get(0).getFileSize());
 
                     mfile = driveId.asDriveFile();
-                    mfile.open(mGoogleapiClient, DriveFile.MODE_WRITE_ONLY, new DriveFile.DownloadProgressListener() {
+                    mfile.open(mGoogleapiClient, DriveFile.MODE_WRITE_ONLY, new DriveFile
+                            .DownloadProgressListener() {
                         @Override
                         public void onProgress(long bytesDown, long bytesExpected) {
-                            Log.e("jackfunny", "Downloading... (" + bytesDown + "/" + bytesExpected + ")");
+                            Log.e("jackfunny", "Downloading... (" + bytesDown + "/" +
+                                    bytesExpected + ")");
                         }
                     })
                             .setResultCallback(contentsOpenedCallback);
                 }
                 // if file not exit create a new file
                 else {
-                    Drive.DriveApi.newDriveContents(mGoogleapiClient).setResultCallback(newcontentsCallback);
+                    Drive.DriveApi.newDriveContents(mGoogleapiClient).setResultCallback
+                            (newcontentsCallback);
                 }
                 metadataBufferResult.getMetadataBuffer().release();
             }
@@ -166,108 +135,119 @@ public class BackupService extends Service {
 
     }
 
-    final private ResultCallback<DriveApi.DriveContentsResult> newcontentsCallback = new ResultCallback<DriveApi.DriveContentsResult>() {
+    final private ResultCallback<DriveApi.DriveContentsResult> newcontentsCallback = new
+            ResultCallback<DriveApi.DriveContentsResult>() {
 
-        @Override
-        public void onResult(DriveApi.DriveContentsResult result) {
-            if (!result.getStatus().isSuccess()) {
-                Log.e("jackfunny", "Error while trying to create new file contents");
-                return;
-            }
-            //create metadata to attach file
-            String mimeType = MimeTypeMap.getSingleton().getExtensionFromMimeType("db");
-            Log.e("jackfunny", "mimeType = " + mimeType);
-            MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                    .setTitle(GOOGLE_DRIVE_FILE_NAME) // Google Drive File name
-                    .setMimeType(mimeType)
-                    .setStarred(true).build();
-            // create a file on root folder
-            Drive.DriveApi.getRootFolder(mGoogleapiClient)
-                    .createFile(mGoogleapiClient, changeSet, result.getDriveContents())
-                    .setResultCallback(createfileCallback);
-        }
-
-    };
-
-    final private ResultCallback<DriveFolder.DriveFileResult> createfileCallback = new ResultCallback<DriveFolder.DriveFileResult>() {
-
-        @Override
-        public void onResult(DriveFolder.DriveFileResult result) {
-            if (!result.getStatus().isSuccess()) {
-                Log.e("jackfunny", "Error while trying to create the file");
-                return;
-            }
-            mfile = result.getDriveFile();
-            mfile.open(mGoogleapiClient, DriveFile.MODE_WRITE_ONLY, null).setResultCallback(contentsOpenedCallback);
-        }
-    };
-
-
-    final private ResultCallback<DriveApi.DriveContentsResult> contentsOpenedCallback = new ResultCallback<DriveApi.DriveContentsResult>() {
-
-        @Override
-        public void onResult(DriveApi.DriveContentsResult result) {
-
-            if (!result.getStatus().isSuccess()) {
-                Log.e("jackfunny", "Error opening file");
-                return;
-            }
-
-            try {
-                FileInputStream is = new FileInputStream(new File(Environment.getExternalStorageDirectory(),BACKUP_FILE_ZIP_NAME));
-                BufferedInputStream in = new BufferedInputStream(is);
-                byte[] buffer = new byte[BUFFER_SIZE];
-                DriveContents content = result.getDriveContents();
-                BufferedOutputStream out = new BufferedOutputStream(content.getOutputStream());
-                int n;
-                while ((n = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, n);
-                }
-                out.close();//remember to close and flush because output may go wrong with the last data
-                in.close();
-                content.commit(mGoogleapiClient, null).setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status result) {
-                        // Handle the response status
+                @Override
+                public void onResult(DriveApi.DriveContentsResult result) {
+                    if (!result.getStatus().isSuccess()) {
+                        Log.e("jackfunny", "Error while trying to create new file contents");
+                        return;
                     }
-                });
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+                    //create metadata to attach file
+                    String mimeType = MimeTypeMap.getSingleton().getExtensionFromMimeType(EXTENSION_MINE_TYPE);
+                    Log.e("jackfunny", "mimeType = " + mimeType);
+                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                            .setTitle(GOOGLE_DRIVE_FILE_NAME) // Google Drive File name
+                            .setMimeType(mimeType)
+                            .setStarred(true).build();
+                    // create a file on root folder
+                    Drive.DriveApi.getRootFolder(mGoogleapiClient)
+                            .createFile(mGoogleapiClient, changeSet, result.getDriveContents())
+                            .setResultCallback(createfileCallback);
+                }
 
-    };
+            };
+    final private ResultCallback<DriveFolder.DriveFileResult> createfileCallback = new
+            ResultCallback<DriveFolder.DriveFileResult>() {
+
+                @Override
+                public void onResult(DriveFolder.DriveFileResult result) {
+                    if (!result.getStatus().isSuccess()) {
+                        Log.e("jackfunny", "Error while trying to create the file");
+                        return;
+                    }
+                    mfile = result.getDriveFile();
+                    mfile.open(mGoogleapiClient, DriveFile.MODE_WRITE_ONLY, null).setResultCallback
+                            (contentsOpenedCallback);
+                }
+            };
+
+    final private ResultCallback<DriveApi.DriveContentsResult> contentsOpenedCallback = new
+            ResultCallback<DriveApi.DriveContentsResult>() {
+
+                @Override
+                public void onResult(DriveApi.DriveContentsResult result) {
+
+                    if (!result.getStatus().isSuccess()) {
+                        Log.e("jackfunny", "Error opening file");
+                        return;
+                    }
+
+                    try {
+                        FileInputStream is = new FileInputStream(new File(Environment
+                                .getExternalStorageDirectory(), BACKUP_FILE_ZIP_NAME));
+                        BufferedInputStream in = new BufferedInputStream(is);
+                        byte[] buffer = new byte[BUFFER_SIZE];
+                        DriveContents content = result.getDriveContents();
+                        BufferedOutputStream out = new BufferedOutputStream(content
+                                .getOutputStream());
+                        int n;
+                        while ((n = in.read(buffer)) > 0) {
+                            out.write(buffer, 0, n);
+                        }
+                        out.close();//remember to close and flush because output may go wrong
+                        // with the
+                        // last data
+                        in.close();
+                        content.commit(mGoogleapiClient, null).setResultCallback(new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status result) {
+                                // Handle the response status
+                            }
+                        });
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+
+            };
 
     public void downloadDriveBackup() {
         Query query = new Query.Builder()
                 .addFilter(Filters.eq(SearchableField.TITLE, GOOGLE_DRIVE_FILE_NAME))
                 .build();
-        Log.e("jackfunny", "downloading downloadDriveBackup thread = " + Thread.currentThread().getId());
+        Log.e("jackfunny", "downloading downloadDriveBackup thread = " + Thread.currentThread()
+                .getId());
 
         Drive.DriveApi.query(mGoogleapiClient, query).setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
             @Override
             public void onResult(DriveApi.MetadataBufferResult metadataBufferResult) {
 
-                Log.e("jackfunny", "downloading onResult thread = " + Thread.currentThread().getId());
+                Log.e("jackfunny", "downloading onResult thread = " + Thread.currentThread()
+                        .getId());
                 int count = metadataBufferResult.getMetadataBuffer().getCount();
-                if (count<0){
+                if (count < 0) {
                     metadataBufferResult.getMetadataBuffer().release();
                     return;
                 }
                 Log.e("jackfunny", "count = " + count);
                 DriveId driveId = metadataBufferResult.getMetadataBuffer().get(0).getDriveId();
                 Log.e("jackfunny", "driveID = " + driveId);
-                Log.e("jackfunny", "filesize in cloud " + metadataBufferResult.getMetadataBuffer().get(0).getFileSize());
+                Log.e("jackfunny", "filesize in cloud " + metadataBufferResult.getMetadataBuffer
+                        ().get(0).getFileSize());
                 metadataBufferResult.getMetadataBuffer().release();
                 mfile = driveId.asDriveFile();
-                mfile.open(mGoogleapiClient, DriveFile.MODE_READ_ONLY, new DriveFile.DownloadProgressListener() {
+                mfile.open(mGoogleapiClient, DriveFile.MODE_READ_ONLY, new DriveFile
+                        .DownloadProgressListener() {
                     @Override
                     public void onProgress(long bytesDown, long bytesExpected) {
-                        Log.e("jackfunny", "Downloading... (" + bytesDown + "/" + bytesExpected + ")");
+                        Log.e("jackfunny", "Downloading... (" + bytesDown + "/" + bytesExpected +
+                                ")");
                     }
                 })
                         .setResultCallback(restoreContentsOpenCallback);
@@ -285,7 +265,7 @@ public class BackupService extends Service {
                     }
 
                     File external_path = Environment.getExternalStorageDirectory();
-                    File backup_zipFile = new File(external_path,BACKUP_FILE_ZIP_NAME);
+                    File backup_zipFile = new File(external_path, BACKUP_FILE_ZIP_NAME);
 
                     DriveContents contents = result.getDriveContents();
                     try {
@@ -313,75 +293,79 @@ public class BackupService extends Service {
                     }
 
                     //notify db change ----
-                    Log.e("jackfunny", "downloading ResultCallback thread = " + Thread.currentThread().getId());
+                    Log.e("jackfunny", "downloading ResultCallback thread = " + Thread
+                            .currentThread().getId());
 
                     Intent intent = new Intent(BROADCAST_ACTION);
                     intent.putExtra(BROADCAST_URL_KEY, MoneyProvider.URL);
                     sendBroadcast(intent);
-                    contents.discard(mGoogleapiClient); //because we just need reading the drivefile without changes so we use discard not commit
+                    contents.discard(mGoogleapiClient); //because we just need reading the
+                    // drivefile without changes so we use discard not commit
 
                 }
             };
+
 
     private File getDbPath() {
         return this.getDatabasePath(MoneyProvider.DATABASE_NAME);
     }
 
-    private  void ZipBackupFile() {
+    private void ZipBackupFile() {
         try {
             File external_path = Environment.getExternalStorageDirectory();
-            File backup_zipFile = new File(external_path,BACKUP_FILE_ZIP_NAME);
+            File backup_zipFile = new File(external_path, BACKUP_FILE_ZIP_NAME);
             ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(backup_zipFile));
-            File sourceFile =getFilesDir();
-            if(sourceFile.isDirectory()){
+            File sourceFile = getFilesDir();
+            if (sourceFile.isDirectory()) {
                 File[] files = sourceFile.listFiles();
                 for (File file1 : files) {
-                    readFiletoZip(file1,zipOut);
+                    readFiletoZip(file1, zipOut);
                 }
             }
-            File DBFile =getDbPath();
-            readFiletoZip(DBFile,zipOut);
+            File DBFile = getDbPath();
+            readFiletoZip(DBFile, zipOut);
             zipOut.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private void readFiletoZip(File sourceFile,ZipOutputStream zipOut) throws IOException {
+
+    private void readFiletoZip(File sourceFile, ZipOutputStream zipOut) throws IOException {
         InputStream input = new FileInputStream(sourceFile);
-        zipOut.putNextEntry(new ZipEntry( sourceFile.getName()));
-        Log.e("jackZip", "File = " +  sourceFile.getName());
+        zipOut.putNextEntry(new ZipEntry(sourceFile.getName()));
+        Log.e("jackZip", "File = " + sourceFile.getName());
         byte[] buffer = new byte[BUFFER_SIZE];
         int n;
         while ((n = input.read(buffer)) > 0) {
-            zipOut.write(buffer,0,n);
-            Log.e("jackZip","n= "+n);
+            zipOut.write(buffer, 0, n);
+            Log.e("jackZip", "n= " + n);
         }
         input.close();
 
     }
-    private  void unZipBackupFile(){
+
+    private void unZipBackupFile() {
         try {
             File external_path = Environment.getExternalStorageDirectory();
-            File backup_zipFile = new File(external_path,BACKUP_FILE_ZIP_NAME);
+            File backup_zipFile = new File(external_path, BACKUP_FILE_ZIP_NAME);
             ZipFile zipFile = new ZipFile(backup_zipFile);
             ZipInputStream zipInput = new ZipInputStream(new FileInputStream(backup_zipFile));
-            ZipEntry entry ;
-            while((entry = zipInput.getNextEntry()) != null){
-                Log.e("jackZip" ,"unZip "+ entry.getName() );
+            ZipEntry entry;
+            while ((entry = zipInput.getNextEntry()) != null) {
+                Log.e("jackZip", "unZip " + entry.getName());
                 File outFile;
-                if (entry.getName().equals(MoneyProvider.DATABASE_NAME)){
-                    outFile =getDbPath();
-                    Log.e("jackZip" ,"unZip file to"+ entry.getName() +" outFile ="+  outFile  );
-                }
-                else {
-                    outFile = new File(String.format("%s%s%s", getFilesDir(), File.separator, entry.getName()));
-                    Log.e("jackZip" ,"unZip file to"+ entry.getName() +" outFile ="+  outFile  );
+                if (entry.getName().equals(MoneyProvider.DATABASE_NAME)) {
+                    outFile = getDbPath();
+                    Log.e("jackZip", "unZip file to" + entry.getName() + " outFile =" + outFile);
+                } else {
+                    outFile = new File(String.format("%s%s%s", getFilesDir(), File.separator,
+                            entry.getName()));
+                    Log.e("jackZip", "unZip file to" + entry.getName() + " outFile =" + outFile);
                 }
 
-                if(!outFile.exists()){
+                if (!outFile.exists()) {
                     outFile.createNewFile();
                 }
                 InputStream input = zipFile.getInputStream(entry);
@@ -389,13 +373,53 @@ public class BackupService extends Service {
                 byte[] buffer = new byte[BUFFER_SIZE];
                 int n;
                 while ((n = input.read(buffer)) > 0) {
-                    output.write(buffer,0,n);
+                    output.write(buffer, 0, n);
                 }
                 input.close();
                 output.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    class DownloadThread extends Thread {
+
+        //projected startID
+        private int startId = 0;
+
+        public DownloadThread(int startId) {
+            this.startId = startId;
+
+        }
+
+        @Override
+        public void run() {
+            Log.e("jackfunny", "download Thread run(" + startId + ")...");
+            Log.e("jackfunny", "downloading run thread = " + Thread.currentThread().getId());
+            downloadDriveBackup();
+            Log.e("jackfunny", "download done stopSelf(" + startId + ")");
+            stopSelf(startId);
+        }
+    }
+
+    class UploadThread extends Thread {
+
+        //projected startID
+        private int startId = 0;
+
+        public UploadThread(int startId) {
+            this.startId = startId;
+        }
+
+        @Override
+        public void run() {
+            Log.e("jackfunny", "upload Thread run(" + startId + ")");
+            Log.e("jackfunnyZip", "upload Thread run ZipBackupFile...");
+            ZipBackupFile();
+            uploadDriveBackupFile();
+            Log.e("jackfunny", "upload done and stopSelf(" + startId + ")");
+            stopSelf(startId);
         }
     }
 

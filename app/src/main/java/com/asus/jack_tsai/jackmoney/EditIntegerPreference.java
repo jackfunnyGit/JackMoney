@@ -39,7 +39,8 @@ public class EditIntegerPreference extends EditTextPreference {
     public void setText(String text) {
         Log.e("jackfunny", "EditIntegerPreference setText");
         if (!text.matches(REGULAR_EXPRESSION)) {
-            Toast.makeText(getContext(), mContext.getString(R.string.Toast_wrong_syntax), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), mContext.getString(R.string.Toast_wrong_syntax), Toast
+                    .LENGTH_SHORT).show();
             return;
         }
         if (getSharedPreferences() != null) {

@@ -24,7 +24,8 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
 
-    public TabFragmentPagerAdapter(FragmentManager fm, Context context, @NonNull ArrayList<Fragment> fragmentArray, @NonNull int[] titleArray, @NonNull int[] imageArray) {
+    public TabFragmentPagerAdapter(FragmentManager fm, Context context, @NonNull
+    ArrayList<Fragment> fragmentArray, @NonNull int[] titleArray, @NonNull int[] imageArray) {
         super(fm);
         this.fragmentArray = fragmentArray;
         mSize = fragmentArray.size();

@@ -19,12 +19,12 @@ import java.io.IOException;
  */
 public class ExportAsyncTask extends AsyncTask<String, Integer, Boolean> {
 
+    private static final int PARAMETER_INDEX_FILE_NAME = 0;
+    private static final int SLEEPTIME = 100;
+    private static final int HUNDRED_PERCENT_COEFFICIENT = 100;
+    private static final String COMMA_TEXT = ",";
     private Context mContext;
     private ProgressDialog mProgressDialog;
-    private static final int PARAMETER_INDEX_FILE_NAME = 0;
-    private static final int SLEEPTIME=100;
-    private static final int HUNDRED_PERCENT_COEFFICIENT=100;
-    private static final String COMMA_TEXT = ",";
 
     public ExportAsyncTask(Context mContext) {
         this.mContext = mContext;
@@ -44,13 +44,15 @@ public class ExportAsyncTask extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
         String CSV_FILE_NAME = params[PARAMETER_INDEX_FILE_NAME];
-        Cursor cursor = mContext.getContentResolver().query(Uri.parse(MoneyProvider.URL), null, null, null, MoneyProvider.DATE);
+        Cursor cursor = mContext.getContentResolver().query(Uri.parse(MoneyProvider.URL), null,
+                null, null, MoneyProvider.DATE);
         if (cursor == null) {
             return false;
         }
         File sdCardDir = Environment.getExternalStorageDirectory();
         File saveFile = new File(sdCardDir, CSV_FILE_NAME);
-        Log.e("jackfunny", "ExportAsyncTask doInBackground : saveFile path =  " + saveFile.toString());
+        Log.e("jackfunny", "ExportAsyncTask doInBackground : saveFile path =  " + saveFile
+                .toString());
         try {
             FileWriter fw = new FileWriter(saveFile);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -109,7 +111,8 @@ public class ExportAsyncTask extends AsyncTask<String, Integer, Boolean> {
         if (mProgressDialog.isShowing())
             mProgressDialog.dismiss();
         if (!Boolean) {
-            Toast.makeText(mContext, mContext.getString(R.string.exoprt_csvfile), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.exoprt_csvfile), Toast
+                    .LENGTH_SHORT).show();
         }
     }
 }

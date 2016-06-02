@@ -24,7 +24,8 @@ public class TabFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         Log.e("jackfunny", "TabFragment onCreateView");
         return inflater.inflate(R.layout.frg_tab, container, false);
     }
@@ -42,7 +43,8 @@ public class TabFragment extends Fragment {
                 R.string.tab_home,
                 R.string.tab_statistics,
         };
-        TabFragmentPagerAdapter adapter = new TabFragmentPagerAdapter(getChildFragmentManager(), getContext(), fragmentArray, title, images);
+        TabFragmentPagerAdapter adapter = new TabFragmentPagerAdapter(getChildFragmentManager(),
+                getContext(), fragmentArray, title, images);
         //Pager
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
